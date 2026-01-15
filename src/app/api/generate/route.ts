@@ -43,7 +43,10 @@ export async function POST(req: Request) {
                         },
                     },
                 },
-                include: { usage: true }
+                include: {
+                    usage: true,
+                    profile: true
+                }
             })
         }
 
