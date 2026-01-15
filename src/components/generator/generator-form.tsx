@@ -145,13 +145,10 @@ export function GeneratorForm() {
                     {isLoading ? (
                         <>
                             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                            Generating Post Variants...
+                            Generating...
                         </>
                     ) : (
-                        <>
-                            <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                            Generate 3 Post Screenshots
-                        </>
+                        "Generate"
                     )}
                 </Button>
 

@@ -29,7 +29,7 @@ export function MobileNav({ isPro, currentUsage }: MobileNavProps) {
 
             <button
                 onClick={() => setOpen(true)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                 aria-label="Open menu"
             >
                 <Menu className="h-6 w-6 text-slate-600" />
@@ -49,7 +49,7 @@ export function MobileNav({ isPro, currentUsage }: MobileNavProps) {
                         <div className="absolute top-2 right-2 z-50">
                             <button
                                 onClick={() => setOpen(false)}
-                                className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                                className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
                             >
                                 <X className="h-5 w-5 text-slate-500" />
                             </button>

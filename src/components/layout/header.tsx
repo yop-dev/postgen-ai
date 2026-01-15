@@ -43,7 +43,7 @@ export function Header() {
 
                 {/* Mobile Menu Toggle */}
                 <button
-                    className="md:hidden p-2 text-slate-600"
+                    className="md:hidden p-2 text-slate-600 cursor-pointer"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
                     {isMenuOpen ? <X /> : <Menu />}

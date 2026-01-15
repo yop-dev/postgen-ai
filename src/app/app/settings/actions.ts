@@ -1,0 +1,42 @@
+"use server"
+
+import { auth } from "@clerk/nextjs/server"
+import { db } from "@/lib/db"
+import { revalidatePath } from "next/cache"
+
+export async function updateProfile(prevState: any, formData: FormData) {
+    try {
+        const { userId } = await auth()
+        if (!userId) return { error: "Unauthorized" }
+
+        const niche = formData.get("niche") as string
+        const tone = formData.get("tone") as string
+        const bio = formData.get("bio") as string
+
+        const user = await db.user.findUnique({
+            where: { clerkId: userId }
+        })
+
+        if (!user) return { error: "User not found" }
+
+        await db.userProfile.upsert({
+            where: { userId: user.id },
+            update: {
+                niche,
+                preferredTone: tone,
+                bio
+            },
+            create: {
+                userId: user.id,
+                niche,
+                preferredTone: tone,
+                bio
+            }
+        })
+
+        revalidatePath("/app/settings")
+        return { success: true, message: "Profile updated successfully" }
+    } catch (error) {
+        return { error: "Failed to update profile" }
+    }
+}
