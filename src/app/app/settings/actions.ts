@@ -4,10 +4,16 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db"
 import { revalidatePath } from "next/cache"
 
-export async function updateProfile(prevState: any, formData: FormData) {
+export type ActionState = {
+    success: boolean
+    message?: string
+    error?: string
+}
+
+export async function updateProfile(prevState: any, formData: FormData): Promise<ActionState> {
     try {
         const { userId } = await auth()
-        if (!userId) return { error: "Unauthorized" }
+        if (!userId) return { success: false, error: "Unauthorized" }
 
         const niche = formData.get("niche") as string
         const tone = formData.get("tone") as string
@@ -17,7 +23,7 @@ export async function updateProfile(prevState: any, formData: FormData) {
             where: { clerkId: userId }
         })
 
-        if (!user) return { error: "User not found" }
+        if (!user) return { success: false, error: "User not found" }
 
         await db.userProfile.upsert({
             where: { userId: user.id },
@@ -37,6 +43,6 @@ export async function updateProfile(prevState: any, formData: FormData) {
         revalidatePath("/app/settings")
         return { success: true, message: "Profile updated successfully" }
     } catch (error) {
-        return { error: "Failed to update profile" }
+        return { success: false, error: "Failed to update profile" }
     }
 }
