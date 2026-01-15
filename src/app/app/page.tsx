@@ -17,6 +17,11 @@ export default async function AppDashboard() {
     const isPro = user?.plan === "PRO"
     const currentUsage = user?.usage?.lifetimeCount || 0
 
+    // Get total posts count
+    const totalPosts = await db.generation.count({
+        where: { userId: user?.id }
+    })
+
     return (
         <div className="space-y-10 pb-10">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -69,7 +74,7 @@ export default async function AppDashboard() {
                         <History className="h-6 w-6 text-violet-600" />
                     </div>
                     <h3 className="text-lg font-bold text-slate-900">Total Posts</h3>
-                    <span className="text-4xl font-black text-slate-900 mt-2 block">0</span>
+                    <span className="text-4xl font-black text-slate-900 mt-2 block">{totalPosts}</span>
                     <p className="text-sm text-slate-500 mt-2">Across all time</p>
                 </div>
 
