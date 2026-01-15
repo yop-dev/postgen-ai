@@ -53,9 +53,11 @@ const navItems = [
 interface SidebarProps {
     isPro?: boolean
     currentUsage?: number
+    className?: string
+    onNavigate?: () => void
 }
 
-export function Sidebar({ isPro = false, currentUsage = 0 }: SidebarProps) {
+export function Sidebar({ isPro = false, currentUsage = 0, className, onNavigate }: SidebarProps) {
     const pathname = usePathname()
     const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -64,15 +66,18 @@ export function Sidebar({ isPro = false, currentUsage = 0 }: SidebarProps) {
     return (
         <div className={cn(
             "relative flex flex-col h-full bg-white border-r border-slate-200 transition-all duration-300 shadow-sm",
-            isCollapsed ? "w-20" : "w-72"
+            isCollapsed ? "w-20" : "w-72",
+            className
         )}>
             {/* Toggle Button */}
-            <button
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                className="absolute -right-3 top-10 h-6 w-6 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-sm hover:bg-slate-50 transition-colors z-10"
-            >
-                {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </button>
+            {!className && (
+                <button
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    className="absolute -right-3 top-10 h-6 w-6 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-sm hover:bg-slate-50 transition-colors z-10"
+                >
+                    {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+                </button>
+            )}
 
             {/* Logo */}
             <div className={cn(
@@ -100,6 +105,7 @@ export function Sidebar({ isPro = false, currentUsage = 0 }: SidebarProps) {
                     <Link
                         key={item.href}
                         href={item.href}
+                        onClick={onNavigate}
                         className={cn(
                             "flex items-center gap-3 px-3 py-3 rounded-xl transition-all group",
                             pathname === item.href
