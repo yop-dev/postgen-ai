@@ -10,6 +10,9 @@ export const metadata: Metadata = {
         title: "PostGen AI",
         description: "See your LinkedIn post before you publish it",
     },
+    icons: {
+        icon: "/postgen-logo.jpg",
+    },
 };
 
 export default function RootLayout({

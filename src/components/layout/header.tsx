@@ -1,10 +1,17 @@
+import NextImage from "next/image"
+
 export function Header() {
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
             <div className="container mx-auto flex h-16 items-center justify-between px-6">
                 <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                        <span className="text-white font-bold text-xl">P</span>
+                    <div className="relative h-8 w-8 rounded-lg overflow-hidden">
+                        <NextImage
+                            src="/postgen-logo.jpg"
+                            alt="PostGen AI Logo"
+                            fill
+                            className="object-cover"
+                        />
                     </div>
                     <span className="text-xl font-bold text-slate-900 tracking-tight">PostGen AI</span>
                 </div>

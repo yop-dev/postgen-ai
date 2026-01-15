@@ -13,6 +13,7 @@ import {
     ChevronRight,
     Crown
 } from "lucide-react"
+import NextImage from "next/image"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
@@ -79,8 +80,13 @@ export function Sidebar({ isPro = false, currentUsage = 0 }: SidebarProps) {
                 isCollapsed && "justify-center px-0"
             )}>
                 <Link href="/app" className="flex items-center gap-3 group">
-                    <div className="h-10 w-10 min-w-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
-                        <span className="text-white font-bold text-xl">P</span>
+                    <div className="relative h-10 w-10 min-w-10 rounded-xl overflow-hidden shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
+                        <NextImage
+                            src="/postgen-logo.jpg"
+                            alt="PostGen AI Logo"
+                            fill
+                            className="object-cover"
+                        />
                     </div>
                     {!isCollapsed && (
                         <span className="text-xl font-bold text-slate-800 tracking-tight">PostGen AI</span>
