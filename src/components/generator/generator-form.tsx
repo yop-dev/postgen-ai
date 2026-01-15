@@ -14,6 +14,13 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Textarea } from "@/components/ui/textarea"
 import {
     Select,
@@ -22,7 +29,7 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select"
-import { Sparkles, Loader2, Wand2 } from "lucide-react"
+import { Sparkles, Loader2, Wand2, Info } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
@@ -39,6 +46,7 @@ export function GeneratorForm() {
             minWords: 50,
             maxWords: 300,
             variantCount: 1,
+            personalize: false,
         },
     })
 
@@ -206,6 +214,39 @@ export function GeneratorForm() {
                         )}
                     />
                 </div>
+
+                {/* Personalize Checkbox */}
+                <FormField
+                    control={form.control}
+                    name="personalize"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-slate-200 p-4">
+                            <FormControl>
+                                <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                                <div className="flex items-center gap-2">
+                                    <FormLabel className="font-semibold text-slate-900">
+                                        Personalize with my profile
+                                    </FormLabel>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Info className="h-4 w-4 text-slate-400 cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent className="max-w-xs">
+                                                <p>Uses your Bio and Niche from Settings to generate posts tailored to your brand and expertise</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
+                                </div>
+                            </div>
+                        </FormItem>
+                    )}
+                />
 
                 <Button
                     type="submit"

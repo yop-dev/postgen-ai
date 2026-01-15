@@ -16,7 +16,6 @@ export async function updateProfile(prevState: any, formData: FormData): Promise
         if (!userId) return { success: false, error: "Unauthorized" }
 
         const niche = formData.get("niche") as string
-        const tone = formData.get("tone") as string
         const bio = formData.get("bio") as string
 
         const user = await db.user.findUnique({
@@ -29,13 +28,11 @@ export async function updateProfile(prevState: any, formData: FormData): Promise
             where: { userId: user.id },
             update: {
                 niche,
-                preferredTone: tone,
                 bio
             },
             create: {
                 userId: user.id,
                 niche,
-                preferredTone: tone,
                 bio
             }
         })

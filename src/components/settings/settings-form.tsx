@@ -6,7 +6,7 @@ import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-import { TONES } from "@/constants"
+
 
 const initialState: ActionState = {
     message: "",
@@ -36,7 +36,6 @@ interface SettingsFormProps {
     email: string
     profile: {
         niche?: string | null
-        preferredTone?: string | null
         bio?: string | null
     } | null
 }
@@ -88,23 +87,6 @@ export function SettingsForm({ email, profile }: SettingsFormProps) {
                             className="w-full rounded-md border border-slate-300 p-3 text-slate-900 focus:ring-slate-900 focus:border-slate-900"
                             placeholder="E.g., Tech, Marketing, Finance"
                         />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Preferred Tone
-                        </label>
-                        <select
-                            name="tone"
-                            defaultValue={profile?.preferredTone || "professional"}
-                            className="w-full rounded-md border border-slate-300 p-3 text-slate-900 focus:ring-slate-900 focus:border-slate-900"
-                        >
-                            {TONES.map(tone => (
-                                <option key={tone.value} value={tone.value}>
-                                    {tone.label}
-                                </option>
-                            ))}
-                        </select>
                     </div>
 
                     <div>

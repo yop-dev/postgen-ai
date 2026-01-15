@@ -15,13 +15,16 @@ export async function POST(req: Request) {
 
         const body = await req.json()
         const validatedData = generateSchema.parse(body)
-        const { topic, objective, tone, minWords, maxWords, variantCount } = validatedData
+        const { topic, objective, tone, minWords, maxWords, variantCount, personalize } = validatedData
         const count = variantCount || 1
 
         // 1. Check user usage/subscription
         let user = await db.user.findUnique({
             where: { clerkId: userId },
-            include: { usage: true }
+            include: {
+                usage: true,
+                profile: true  // Include profile for personalization
+            }
         })
 
         if (!user) {
@@ -56,8 +59,23 @@ export async function POST(req: Request) {
         }
 
         // 2. Generate Captions AND Image Prompt using Groq
+        // Build personalization context if enabled
+        let personalizationContext = ""
+        if (personalize && user.profile) {
+            const parts = []
+            if (user.profile.niche) {
+                parts.push(`You are writing for someone in the ${user.profile.niche} space.`)
+            }
+            if (user.profile.bio) {
+                parts.push(`Their professional bio: "${user.profile.bio}"`)
+            }
+            if (parts.length > 0) {
+                personalizationContext = `\n\nPERSONALIZATION CONTEXT:\n${parts.join(' ')}\nAlign the post with their expertise, voice, and brand.\n`
+            }
+        }
+
         const prompt = `Generate ${count} high-engaging LinkedIn post variants about the following topic: "${topic}". 
-    The objective is ${objective} and the tone should be ${tone}.
+    The objective is ${objective} and the tone should be ${tone}.${personalizationContext}
     IMPORTANT - WORD COUNT STRICTNESS:
     The post MUST be between ${minWords || 50} and ${maxWords || 300} words.
     Do NOT generate short content if a higher count is requested.
