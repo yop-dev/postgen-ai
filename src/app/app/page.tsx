@@ -1,29 +1,43 @@
 import { currentUser } from "@clerk/nextjs/server"
+import { db } from "@/lib/db"
 import { Button } from "@/components/ui/button"
+import { UpgradeButton } from "@/components/upgrade-button"
 import { Sparkles, History, Zap, ArrowRight, LayoutDashboard } from "lucide-react"
 import Link from "next/link"
 
 export default async function AppDashboard() {
-    const user = await currentUser()
+    const clerkUser = await currentUser()
+
+    // Get user from database to check plan
+    const user = await db.user.findUnique({
+        where: { clerkId: clerkUser?.id },
+        include: { usage: true }
+    })
+
+    const isPro = user?.plan === "PRO"
+    const currentUsage = user?.usage?.lifetimeCount || 0
 
     return (
         <div className="space-y-10 pb-10">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">
-                        Welcome back, {user?.firstName || "Creator"}! 👋
+                        Welcome back, {clerkUser?.firstName || "Creator"}! 👋
                     </h1>
                     <p className="text-lg text-slate-500 mt-2">
                         Ready to craft your next viral LinkedIn post?
                     </p>
                 </div>
-                <Link href="/app/generate">
-                    <Button size="lg" className="h-12 px-6 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 group">
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        Generate New Post
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                </Link>
+                <div className="flex gap-3">
+                    <UpgradeButton isPro={isPro} />
+                    <Link href="/app/generate">
+                        <Button size="lg" className="h-12 px-6 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 group">
+                            <Sparkles className="mr-2 h-4 w-4" />
+                            Generate New Post
+                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             {/* Stats Overview */}
@@ -32,12 +46,22 @@ export default async function AppDashboard() {
                     <div className="h-12 w-12 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <Zap className="h-6 w-6 text-blue-600" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900">Generations Left</h3>
+                    <h3 className="text-lg font-bold text-slate-900">
+                        {isPro ? "Unlimited Generations" : "Generations Left"}
+                    </h3>
                     <div className="flex items-baseline gap-2 mt-2">
-                        <span className="text-4xl font-black text-blue-600">3</span>
-                        <span className="text-slate-400 font-medium">/ 3</span>
+                        {isPro ? (
+                            <span className="text-4xl font-black bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">∞</span>
+                        ) : (
+                            <>
+                                <span className="text-4xl font-black text-blue-600">{Math.max(0, 3 - currentUsage)}</span>
+                                <span className="text-slate-400 font-medium">/ 3</span>
+                            </>
+                        )}
                     </div>
-                    <p className="text-sm text-slate-500 mt-2">Free plan refills monthly</p>
+                    <p className="text-sm text-slate-500 mt-2">
+                        {isPro ? "Pro plan - no limits!" : "Free plan refills monthly"}
+                    </p>
                 </div>
 
                 <div className="group bg-white rounded-3xl border border-slate-200 p-8 shadow-sm hover:shadow-md transition-all">
