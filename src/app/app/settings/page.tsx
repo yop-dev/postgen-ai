@@ -1,4 +1,17 @@
+"use client"
+
+import { useClerk } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
+
 export default function SettingsPage() {
+    const { signOut } = useClerk()
+    const router = useRouter()
+
+    const handleSignOut = async () => {
+        await signOut()
+        router.push("/")
+    }
+
     return (
         <div className="space-y-6">
             <div>
@@ -70,7 +83,10 @@ export default function SettingsPage() {
             {/* Account Actions */}
             <div className="bg-white rounded-lg border border-gray-200 p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Account</h2>
-                <button className="rounded-lg border border-red-600 px-6 py-2 text-red-600 font-semibold hover:bg-red-50 transition">
+                <button
+                    onClick={handleSignOut}
+                    className="rounded-lg border border-red-600 px-6 py-2 text-red-600 font-semibold hover:bg-red-50 transition"
+                >
                     Sign Out
                 </button>
             </div>

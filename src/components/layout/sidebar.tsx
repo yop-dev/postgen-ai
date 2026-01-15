@@ -151,7 +151,13 @@ export function Sidebar({ isPro = false, currentUsage = 0 }: SidebarProps) {
                     isCollapsed ? "justify-center" : "justify-between"
                 )}>
                     <div className="flex items-center gap-3 overflow-hidden">
-                        <UserButton afterSignOutUrl="/" />
+                        <UserButton
+                            appearance={{
+                                elements: {
+                                    avatarBox: "h-10 w-10"
+                                }
+                            }}
+                        />
                         {!isCollapsed && (
                             <div className="flex flex-col truncate">
                                 <p className="text-sm font-bold text-slate-900 truncate">My Account</p>
