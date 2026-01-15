@@ -54,10 +54,18 @@ export async function POST(req: Request) {
             return new NextResponse("Free limit reached. Please upgrade to Pro.", { status: 403 })
         }
 
-        // 2. Generate Captions using Groq (Fast & Cost-Effective)
+        // 2. Generate Captions AND Image Prompt using Groq
         const prompt = `Generate 3 high-engaging LinkedIn post variants about the following topic: "${topic}". 
     The objective is ${objective} and the tone should be ${tone}.
-    Return the response as a JSON object with a "variants" array containing 3 complete post variants including emojis and hashtags.`
+    
+    ALSO generate a creative, specific text-to-image prompt for a header image that visually represents this topic.
+    - Style guide: Modern, clean, minimalist, abstract or isometric illustration. 
+    - Avoid: Generic stock photos, people shaking hands, messy text.
+    - Focus on: Concepts, metaphors, symbols, or atmospheric scenes relevant to the topic.
+
+    Return the response as a JSON object with:
+    - "variants": array of 3 complete post variants including emojis and hashtags.
+    - "imagePrompt": string containing the image description.`
 
         const completion = await groq.chat.completions.create({
             model: AI_MODELS.TEXT,
@@ -75,12 +83,13 @@ export async function POST(req: Request) {
         // Parse the JSON response
         const parsedContent = JSON.parse(content)
         let variants = Array.isArray(parsedContent.variants) ? parsedContent.variants : Object.values(parsedContent)[0] as any[]
+        const dynamicImagePrompt = parsedContent.imagePrompt || `A professional, high-quality, modern minimalist image for a LinkedIn post about: ${topic}. Style: Clean, corporate yet creative. No text in the image.`
 
         // Groq sometimes returns objects with 'post' property instead of plain strings
-        variants = variants.map((v: any) => typeof v === 'string' ? v : v.post || v.content || JSON.stringify(v))
+        variants = variants.map((v: any) => typeof v === 'string' ? v : v.post || v.content || v.text || JSON.stringify(v))
 
-        // 3. Generate Image using Pollinations AI (Free, No API Key Required)
-        const imagePrompt = `A professional, high-quality, modern minimalist image for a LinkedIn post about: ${topic}. Style: Clean, corporate yet creative. No text in the image.`
+        // 3. Generate Image using Pollinations AI
+        const imagePrompt = dynamicImagePrompt
         const imageUrl = generatePollinationsImage(imagePrompt, {
             width: isPro ? 1024 : 512,
             height: isPro ? 1024 : 512,
