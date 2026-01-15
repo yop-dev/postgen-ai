@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { ThumbsUp, MessageSquare, Repeat2, Send, Globe, MoreHorizontal, User2 } from "lucide-react"
+import { useState, useEffect } from "react"
+import { ThumbsUp, MessageSquare, Repeat2, Send, Globe, MoreHorizontal, User2, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -21,6 +21,13 @@ export function LinkedInPreview({
     createdAt = new Date(),
 }: LinkedInPreviewProps) {
     const [isExpanded, setIsExpanded] = useState(false)
+    const [isLoading, setIsLoading] = useState(!!imageUrl)
+
+    // Reset loading state when image URL changes
+    useEffect(() => {
+        setIsLoading(!!imageUrl)
+    }, [imageUrl])
+
     const previewLimit = 200
 
     const shouldShowSeeMore = content.length > previewLimit
@@ -67,11 +74,18 @@ export function LinkedInPreview({
 
             {/* Image */}
             {imageUrl && (
-                <div className="relative aspect-auto min-h-[300px] bg-slate-50 border-y border-[#e0e0e0] overflow-hidden">
+                <div className="relative aspect-auto min-h-[300px] bg-slate-50 border-y border-[#e0e0e0] overflow-hidden flex items-center justify-center">
+                    {isLoading && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 z-10">
+                            <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
+                        </div>
+                    )}
                     <img
                         src={imageUrl}
                         alt="Post content"
-                        className="w-full h-full object-cover"
+                        className={cn("w-full h-full object-cover transition-opacity duration-300", isLoading ? "opacity-0" : "opacity-100")}
+                        onLoad={() => setIsLoading(false)}
+                        onError={() => setIsLoading(false)}
                     />
                 </div>
             )}

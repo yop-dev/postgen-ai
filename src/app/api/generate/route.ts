@@ -58,7 +58,10 @@ export async function POST(req: Request) {
         // 2. Generate Captions AND Image Prompt using Groq
         const prompt = `Generate ${count} high-engaging LinkedIn post variants about the following topic: "${topic}". 
     The objective is ${objective} and the tone should be ${tone}.
-    Each post should be approximately ${minWords || 50} to ${maxWords || 300} words in length.
+    IMPORTANT - WORD COUNT STRICTNESS:
+    The post MUST be between ${minWords || 50} and ${maxWords || 300} words.
+    Do NOT generate short content if a higher count is requested.
+    If the requested count is high (e.g. >200 words), expand with detailed examples, actionable steps, lists, and deep insights to meet the length requirement.
     
     For EACH variant, you must ALSO generate a creative, specific text-to-image prompt for a header image that visually represents that specific post variant.
     - Style guide: Modern, clean, minimalist, abstract or isometric illustration. 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { LinkedInPreview } from "@/components/generator/linkedin-preview"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -27,12 +27,22 @@ interface GenerationViewProps {
 }
 
 export function GenerationView({ generation }: GenerationViewProps) {
+    const [mounted, setMounted] = useState(false)
     const [activeTab, setActiveTab] = useState("variant-0")
     const [isDownloadingImage, setIsDownloadingImage] = useState(false)
+
+    // Using useEffect to set mounted state prevents hydration mismatch with Radix UI random IDs
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     // Get current active variant index
     const activeIndex = parseInt(activeTab.split("-")[1])
     const activeVariant = generation.variants[activeIndex]
+
+    if (!mounted) {
+        return <div className="min-h-[50vh] flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-slate-400" /></div>
+    }
 
     const handleCopyCaption = () => {
         if (!activeVariant) return
@@ -127,10 +137,13 @@ export function GenerationView({ generation }: GenerationViewProps) {
                             return (
                                 <TabsContent key={variant.id} value={`variant-${index}`} className="mt-0 focus-visible:ring-0">
                                     <div className="flex justify-center bg-slate-100 rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-inner">
-                                        <LinkedInPreview
-                                            content={variant.content}
-                                            imageUrl={variantImage ? `/api/image-proxy?url=${encodeURIComponent(variantImage)}` : undefined}
-                                        />
+                                        {/* Only render preview if active to save bandwidth/rate limits */}
+                                        {activeTab === `variant-${index}` && (
+                                            <LinkedInPreview
+                                                content={variant.content}
+                                                imageUrl={variantImage ? `/api/image-proxy?url=${encodeURIComponent(variantImage)}` : undefined}
+                                            />
+                                        )}
                                     </div>
                                 </TabsContent>
                             )

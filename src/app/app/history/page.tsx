@@ -1,4 +1,5 @@
 import { db } from "@/lib/db"
+import { Generation, Variant } from "@prisma/client"
 import { currentUser } from "@clerk/nextjs/server"
 import { Button } from "@/components/ui/button"
 import { History, Sparkles, Calendar, Layers, ArrowUpRight } from "lucide-react"
@@ -53,13 +54,13 @@ export default async function HistoryPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {generations.map((gen) => (
+                    {generations.map((gen: Generation & { variants: Variant[] }) => (
                         <Link key={gen.id} href={`/app/history/${gen.id}`} className="group">
                             <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-blue-200 transition-all">
                                 <div className="aspect-video relative bg-slate-100">
                                     {gen.imageUrl ? (
                                         <img
-                                            src={gen.imageUrl}
+                                            src={`/api/image-proxy?url=${encodeURIComponent(gen.imageUrl)}`}
                                             alt={gen.topic}
                                             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                                         />
