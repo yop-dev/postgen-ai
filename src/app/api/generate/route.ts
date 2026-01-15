@@ -15,7 +15,8 @@ export async function POST(req: Request) {
 
         const body = await req.json()
         const validatedData = generateSchema.parse(body)
-        const { topic, objective, tone } = validatedData
+        const { topic, objective, tone, minWords, maxWords, variantCount } = validatedData
+        const count = variantCount || 1
 
         // 1. Check user usage/subscription
         let user = await db.user.findUnique({
@@ -55,17 +56,19 @@ export async function POST(req: Request) {
         }
 
         // 2. Generate Captions AND Image Prompt using Groq
-        const prompt = `Generate 3 high-engaging LinkedIn post variants about the following topic: "${topic}". 
+        const prompt = `Generate ${count} high-engaging LinkedIn post variants about the following topic: "${topic}". 
     The objective is ${objective} and the tone should be ${tone}.
+    Each post should be approximately ${minWords || 50} to ${maxWords || 300} words in length.
     
-    ALSO generate a creative, specific text-to-image prompt for a header image that visually represents this topic.
+    For EACH variant, you must ALSO generate a creative, specific text-to-image prompt for a header image that visually represents that specific post variant.
     - Style guide: Modern, clean, minimalist, abstract or isometric illustration. 
     - Avoid: Generic stock photos, people shaking hands, messy text.
     - Focus on: Concepts, metaphors, symbols, or atmospheric scenes relevant to the topic.
 
-    Return the response as a JSON object with:
-    - "variants": array of 3 complete post variants including emojis and hashtags.
-    - "imagePrompt": string containing the image description.`
+    Return the response as a JSON object with a "variants" key containing an array of ${count} objects.
+    Each object in the array MUST have:
+    - "post": the complete post content string including emojis and hashtags.
+    - "imagePrompt": the image description string.`
 
         const completion = await groq.chat.completions.create({
             model: AI_MODELS.TEXT,
@@ -82,24 +85,40 @@ export async function POST(req: Request) {
 
         // Parse the JSON response
         const parsedContent = JSON.parse(content)
-        let variants = Array.isArray(parsedContent.variants) ? parsedContent.variants : Object.values(parsedContent)[0] as any[]
-        const dynamicImagePrompt = parsedContent.imagePrompt || `A professional, high-quality, modern minimalist image for a LinkedIn post about: ${topic}. Style: Clean, corporate yet creative. No text in the image.`
+        let rawVariants = Array.isArray(parsedContent.variants) ? parsedContent.variants : []
 
-        // Groq sometimes returns objects with 'post' property instead of plain strings
-        variants = variants.map((v: any) => typeof v === 'string' ? v : v.post || v.content || v.text || JSON.stringify(v))
+        // Check if rawVariants is valid, if not try to recover
+        if (!rawVariants.length && typeof parsedContent === 'object') {
+            // Sometimes it might be directly in keys if model hallucinates structure
+            const values = Object.values(parsedContent)
+            if (Array.isArray(values[0])) rawVariants = values[0]
+        }
 
-        // 3. Generate Image using Pollinations AI
-        const imagePrompt = dynamicImagePrompt
-        const imageUrl = generatePollinationsImage(imagePrompt, {
-            width: isPro ? 1024 : 512,
-            height: isPro ? 1024 : 512,
-            model: 'flux',
-            nologo: true,
-            seed: Math.floor(Math.random() * 1000000), // Random seed for variety
-            apiKey: process.env.POLLINATIONS_API_KEY, // Optional: Use if you have an API key
+        // Normalize variants to ensure they have post and imagePrompt
+        const processedVariants = rawVariants.map((v: any) => {
+            const postContent = typeof v === 'string' ? v : v.post || v.content || v.text || JSON.stringify(v)
+            const imgPrompt = v.imagePrompt || `A professional, high-quality, modern minimalist image for a LinkedIn post about: ${topic}`
+
+            // Generate Image URL for this variant
+            const imgUrl = generatePollinationsImage(imgPrompt, {
+                width: isPro ? 1024 : 512,
+                height: isPro ? 1024 : 512,
+                model: 'flux',
+                nologo: true,
+                seed: Math.floor(Math.random() * 1000000),
+                apiKey: process.env.POLLINATIONS_API_KEY,
+            })
+
+            return {
+                content: postContent,
+                imageUrl: imgUrl
+            }
         })
 
         // 4. Save to Database
+        // Use the first variant's image as the main one for backward compatibility
+        const mainImageUrl = processedVariants.length > 0 ? processedVariants[0].imageUrl : null
+
         const generation = await db.generation.create({
             data: {
                 userId: user.id,
@@ -107,11 +126,13 @@ export async function POST(req: Request) {
                 objective: objective as any,
                 tone: tone as any,
                 modelUsed: AI_MODELS.TEXT,
-                // @ts-ignore - imageUrl exists in schema and tsc passes.
-                imageUrl: imageUrl || null,
+                // @ts-ignore
+                imageUrl: mainImageUrl, // Backward compatibility
                 variants: {
-                    create: variants.map((v: string) => ({
-                        content: v
+                    create: processedVariants.map((v: any) => ({
+                        content: v.content,
+                        // @ts-ignore
+                        imageUrl: v.imageUrl
                     }))
                 }
             }

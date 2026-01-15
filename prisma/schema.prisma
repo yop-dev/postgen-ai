@@ -69,6 +69,7 @@ model Variant {
   id           String   @id @default(cuid())
   generationId String
   content      String   @db.Text
+  imageUrl     String?
   hashtags     String[]
 
   generation Generation @relation(fields: [generationId], references: [id], onDelete: Cascade)

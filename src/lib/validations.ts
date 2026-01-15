@@ -12,6 +12,9 @@ export const generateSchema = z.object({
     tone: z.enum(['professional', 'casual', 'bold'], {
         message: 'Please select a tone',
     }),
+    minWords: z.number().min(10, "Minimum words must be at least 10").max(1000).optional().default(50),
+    maxWords: z.number().min(20, "Maximum words must be at least 20").max(2000).optional().default(300),
+    variantCount: z.number().min(1).max(3).optional().default(1),
 })
 
 export type GenerateInput = z.infer<typeof generateSchema>

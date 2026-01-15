@@ -21,6 +21,7 @@ interface GenerationViewProps {
         variants: Array<{
             id: string
             content: string
+            imageUrl?: string | null
         }>
     }
 }
@@ -40,7 +41,9 @@ export function GenerationView({ generation }: GenerationViewProps) {
     }
 
     const handleDownloadImage = async () => {
-        if (!generation.imageUrl) {
+        const imageUrl = activeVariant?.imageUrl || generation.imageUrl
+
+        if (!imageUrl) {
             toast.error("No image to download")
             return
         }
@@ -48,7 +51,7 @@ export function GenerationView({ generation }: GenerationViewProps) {
         setIsDownloadingImage(true)
         try {
             // Fetch the image via proxy to avoid CORS
-            const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(generation.imageUrl)}`
+            const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`
             const response = await fetch(proxyUrl)
             if (!response.ok) throw new Error("Failed to fetch image data")
 
@@ -119,16 +122,19 @@ export function GenerationView({ generation }: GenerationViewProps) {
                             </TabsList>
                         </div>
 
-                        {generation.variants.map((variant, index) => (
-                            <TabsContent key={variant.id} value={`variant-${index}`} className="mt-0 focus-visible:ring-0">
-                                <div className="flex justify-center bg-slate-100 rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-inner">
-                                    <LinkedInPreview
-                                        content={variant.content}
-                                        imageUrl={generation.imageUrl ? `/api/image-proxy?url=${encodeURIComponent(generation.imageUrl)}` : undefined}
-                                    />
-                                </div>
-                            </TabsContent>
-                        ))}
+                        {generation.variants.map((variant, index) => {
+                            const variantImage = variant.imageUrl || generation.imageUrl;
+                            return (
+                                <TabsContent key={variant.id} value={`variant-${index}`} className="mt-0 focus-visible:ring-0">
+                                    <div className="flex justify-center bg-slate-100 rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-inner">
+                                        <LinkedInPreview
+                                            content={variant.content}
+                                            imageUrl={variantImage ? `/api/image-proxy?url=${encodeURIComponent(variantImage)}` : undefined}
+                                        />
+                                    </div>
+                                </TabsContent>
+                            )
+                        })}
                     </Tabs>
                 </div>
 

@@ -30,12 +30,15 @@ export function GeneratorForm() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
 
-    const form = useForm<GenerateInput>({
+    const form = useForm({
         resolver: zodResolver(generateSchema),
         defaultValues: {
             topic: "",
             objective: "engagement",
             tone: "professional",
+            minWords: 50,
+            maxWords: 300,
+            variantCount: 1,
         },
     })
 
@@ -127,6 +130,73 @@ export function GeneratorForm() {
                                         {TONES.map((tone) => (
                                             <SelectItem key={tone.value} value={tone.value} className="py-3">
                                                 {tone.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <FormField
+                        control={form.control}
+                        name="minWords"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="font-bold text-slate-900">Min Words</FormLabel>
+                                <FormControl>
+                                    <input
+                                        type="number"
+                                        className="w-full h-12 rounded-xl border border-slate-200 px-3 bg-transparent text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-900 placeholder:text-slate-400"
+                                        {...field}
+                                        value={field.value ?? ''}
+                                        onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="maxWords"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="font-bold text-slate-900">Max Words</FormLabel>
+                                <FormControl>
+                                    <input
+                                        type="number"
+                                        className="w-full h-12 rounded-xl border border-slate-200 px-3 bg-transparent text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-900 placeholder:text-slate-400"
+                                        {...field}
+                                        value={field.value ?? ''}
+                                        onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="variantCount"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className="font-bold text-slate-900">Variants</FormLabel>
+                                <Select onValueChange={(val) => field.onChange(parseInt(val))} defaultValue={field.value?.toString()}>
+                                    <FormControl>
+                                        <SelectTrigger className="h-12 rounded-xl border-slate-200 focus:ring-slate-900">
+                                            <SelectValue placeholder="1" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className="rounded-xl">
+                                        {[1, 2, 3].map((num) => (
+                                            <SelectItem key={num} value={num.toString()} className="py-3">
+                                                {num}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
