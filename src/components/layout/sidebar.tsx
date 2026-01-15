@@ -11,7 +11,7 @@ import {
     Settings,
     ChevronLeft,
     ChevronRight,
-    Plus
+    Crown
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
@@ -49,9 +49,16 @@ const navItems = [
     },
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+    isPro?: boolean
+    currentUsage?: number
+}
+
+export function Sidebar({ isPro = false, currentUsage = 0 }: SidebarProps) {
     const pathname = usePathname()
     const [isCollapsed, setIsCollapsed] = useState(false)
+
+    const remainingGenerations = Math.max(0, 3 - currentUsage)
 
     return (
         <div className={cn(
@@ -108,19 +115,35 @@ export function Sidebar() {
             {/* Bottom Actions */}
             <div className="p-4 border-t border-slate-100 bg-slate-50/50">
                 {!isCollapsed && (
-                    <div className="mb-4 p-4 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-200">
-                        <p className="text-xs font-medium opacity-80 uppercase tracking-wider mb-1">Current Plan</p>
-                        <h4 className="font-bold mb-3">Free Tier</h4>
-                        <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden mb-2">
-                            <div className="h-full bg-white w-1/3" />
+                    isPro ? (
+                        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Crown className="h-4 w-4" />
+                                <p className="text-xs font-medium uppercase tracking-wider">Pro Plan</p>
+                            </div>
+                            <h4 className="font-bold mb-2">Unlimited Access</h4>
+                            <p className="text-[10px] opacity-90">Generate as many posts as you want!</p>
+                            <Link href="/app/billing">
+                                <Button variant="secondary" size="sm" className="w-full mt-4 bg-white text-purple-600 hover:bg-purple-50 font-bold border-none shadow-sm">
+                                    Manage Subscription
+                                </Button>
+                            </Link>
                         </div>
-                        <p className="text-[10px] opacity-90">1/3 free posts used</p>
-                        <Link href="/app/billing">
-                            <Button variant="secondary" size="sm" className="w-full mt-4 bg-white text-blue-600 hover:bg-blue-50 font-bold border-none shadow-sm">
-                                Upgrade to Pro
-                            </Button>
-                        </Link>
-                    </div>
+                    ) : (
+                        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-200">
+                            <p className="text-xs font-medium opacity-80 uppercase tracking-wider mb-1">Current Plan</p>
+                            <h4 className="font-bold mb-3">Free Tier</h4>
+                            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden mb-2">
+                                <div className="h-full bg-white transition-all" style={{ width: `${(currentUsage / 3) * 100}%` }} />
+                            </div>
+                            <p className="text-[10px] opacity-90">{currentUsage}/3 free posts used</p>
+                            <Link href="/app/billing">
+                                <Button variant="secondary" size="sm" className="w-full mt-4 bg-white text-blue-600 hover:bg-blue-50 font-bold border-none shadow-sm">
+                                    Upgrade to Pro
+                                </Button>
+                            </Link>
+                        </div>
+                    )
                 )}
 
                 <div className={cn(

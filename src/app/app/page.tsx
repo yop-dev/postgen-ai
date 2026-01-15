@@ -78,10 +78,16 @@ export default async function AppDashboard() {
                         <LayoutDashboard className="h-6 w-6 text-orange-600" />
                     </div>
                     <h3 className="text-lg font-bold text-slate-900">Active Plan</h3>
-                    <span className="text-4xl font-black text-slate-900 mt-2 block capitalize">Free</span>
-                    <Link href="/app/billing" className="text-sm text-blue-600 font-bold hover:underline mt-2 inline-block">
-                        Upgrade for Unlimited
-                    </Link>
+                    <span className={`text-4xl font-black mt-2 block capitalize ${isPro ? 'bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent' : 'text-slate-900'}`}>
+                        {isPro ? "Pro" : "Free"}
+                    </span>
+                    {isPro ? (
+                        <p className="text-sm text-slate-500 mt-2">Unlimited generations</p>
+                    ) : (
+                        <Link href="/app/billing" className="text-sm text-blue-600 font-bold hover:underline mt-2 inline-block">
+                            Upgrade for Unlimited
+                        </Link>
+                    )}
                 </div>
             </div>
 

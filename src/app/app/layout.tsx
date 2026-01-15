@@ -1,13 +1,30 @@
 import { Sidebar } from "@/components/layout/sidebar"
+import { auth } from "@clerk/nextjs/server"
+import { db } from "@/lib/db"
 
-export default function AppLayout({
+export default async function AppLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const { userId } = await auth()
+
+    // Get user plan and usage
+    let isPro = false
+    let currentUsage = 0
+
+    if (userId) {
+        const user = await db.user.findUnique({
+            where: { clerkId: userId },
+            include: { usage: true }
+        })
+        isPro = user?.plan === "PRO"
+        currentUsage = user?.usage?.lifetimeCount || 0
+    }
+
     return (
         <div className="flex h-screen overflow-hidden bg-slate-50 font-sans">
-            <Sidebar />
+            <Sidebar isPro={isPro} currentUsage={currentUsage} />
 
             <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Mobile Header (Hidden on Laptop) */}
