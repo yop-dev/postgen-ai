@@ -1,0 +1,83 @@
+// PostGen AI Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+enum Objective {
+  engagement
+  promotion
+  educational
+}
+
+enum Tone {
+  professional
+  casual
+  bold
+}
+
+model User {
+  id               String       @id @default(cuid())
+  clerkId          String       @unique
+  email            String       @unique
+  plan             Plan         @default(FREE)
+  stripeCustomerId String?
+  stripeSubId      String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  profile     UserProfile?
+  generations Generation[]
+  usage       PlanUsage?
+}
+
+model UserProfile {
+  id            String  @id @default(cuid())
+  userId        String  @unique
+  niche         String?
+  preferredTone String?
+  bio           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Generation {
+  id        String    @id @default(cuid())
+  userId    String
+  topic     String
+  objective Objective
+  tone      Tone
+  modelUsed String
+  imageUrl  String?
+  createdAt DateTime  @default(now())
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  variants Variant[]
+}
+
+model Variant {
+  id           String   @id @default(cuid())
+  generationId String
+  content      String   @db.Text
+  hashtags     String[]
+
+  generation Generation @relation(fields: [generationId], references: [id], onDelete: Cascade)
+}
+
+model PlanUsage {
+  id            String @id @default(cuid())
+  userId        String @unique
+  lifetimeCount Int    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
