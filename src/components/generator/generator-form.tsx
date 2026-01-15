@@ -76,7 +76,7 @@ export function GeneratorForm() {
                             <FormControl>
                                 <Textarea
                                     placeholder="E.g., Share the 5 biggest mistakes founders make in their first year..."
-                                    className="min-h-[150px] rounded-2xl border-slate-200 focus:ring-blue-500 text-base"
+                                    className="min-h-[150px] rounded-2xl border-slate-200 focus:ring-slate-900 text-base"
                                     {...field}
                                 />
                             </FormControl>
@@ -94,7 +94,7 @@ export function GeneratorForm() {
                                 <FormLabel className="font-bold text-slate-900">Target Objective</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="h-12 rounded-xl border-slate-200">
+                                        <SelectTrigger className="h-12 rounded-xl border-slate-200 focus:ring-slate-900">
                                             <SelectValue placeholder="Select an objective" />
                                         </SelectTrigger>
                                     </FormControl>
@@ -119,7 +119,7 @@ export function GeneratorForm() {
                                 <FormLabel className="font-bold text-slate-900">Post Tone</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="h-12 rounded-xl border-slate-200">
+                                        <SelectTrigger className="h-12 rounded-xl border-slate-200 focus:ring-slate-900">
                                             <SelectValue placeholder="Select a tone" />
                                         </SelectTrigger>
                                     </FormControl>
@@ -140,7 +140,7 @@ export function GeneratorForm() {
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 rounded-2xl group transition-all"
+                    className="w-full h-14 text-lg font-bold bg-slate-900 hover:bg-slate-800 shadow-none rounded-2xl group transition-all"
                 >
                     {isLoading ? (
                         <>

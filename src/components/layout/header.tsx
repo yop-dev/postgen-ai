@@ -13,7 +13,7 @@ export function Header() {
                 <div className="flex items-center gap-2">
                     <div className="relative h-8 w-8 rounded-lg overflow-hidden">
                         <NextImage
-                            src="/postgen-logo.jpg"
+                            src="/post-gen-logov2.jpg"
                             alt="PostGen AI Logo"
                             fill
                             className="object-cover"

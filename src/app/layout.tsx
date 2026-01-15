@@ -11,7 +11,7 @@ export const metadata: Metadata = {
         description: "See your LinkedIn post before you publish it",
     },
     icons: {
-        icon: "/postgen-logo.jpg",
+        icon: "/post-gen-logov2.jpg",
     },
 };
 

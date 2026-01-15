@@ -18,77 +18,85 @@ export default async function BillingPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-gray-900">Billing & Subscription</h1>
-                <p className="text-gray-600 mt-2">Manage your plan and payment methods</p>
+                <h1 className="text-3xl font-bold text-slate-900">Billing & Subscription</h1>
+                <p className="text-slate-500 mt-2">Manage your plan and payment methods</p>
             </div>
 
             {/* Current Plan */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Current Plan</h2>
+            <div className="bg-white rounded-lg border border-slate-200 p-6">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">Current Plan</h2>
                 <div className="flex items-center justify-between">
                     <div>
                         <div className="flex items-center gap-2">
-                            {isPro && <Crown className="h-6 w-6 text-purple-600" />}
-                            <p className={`text-2xl font-bold ${isPro ? 'bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent' : 'text-gray-900'}`}>
+                            {isPro && <Crown className="h-6 w-6 text-slate-900" />}
+                            <p className="text-2xl font-bold text-slate-900">
                                 {isPro ? "Pro Plan" : "Free Plan"}
                             </p>
                         </div>
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-slate-500 mt-1">
                             {isPro ? "Unlimited generations" : `${currentUsage}/3 generations used`}
                         </p>
                     </div>
                     <div className="text-right">
-                        <p className="text-3xl font-bold text-gray-900">${isPro ? "15" : "0"}</p>
-                        <p className="text-sm text-gray-500">per month</p>
+                        <p className="text-3xl font-bold text-slate-900">${isPro ? "15" : "0"}</p>
+                        <p className="text-sm text-slate-500">per month</p>
                     </div>
                 </div>
             </div>
 
             {/* Upgrade to Pro or Manage Subscription */}
             {isPro ? (
-                <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg p-6 text-white">
+                <div className="bg-slate-900 rounded-lg p-6 text-white shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
-                        <Crown className="h-6 w-6" />
+                        <Crown className="h-6 w-6 text-white" />
                         <h2 className="text-2xl font-bold">Pro Subscription Active</h2>
                     </div>
-                    <p className="text-purple-100 mb-6">You have unlimited access to all features!</p>
+                    <p className="text-slate-400 mb-6">You have unlimited access to all features!</p>
 
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm text-purple-100">Billed monthly</p>
+                            <p className="text-sm text-slate-400">Billed monthly</p>
                             <p className="text-3xl font-bold mt-1">$15/month</p>
                         </div>
                         <UpgradeButton isPro={isPro} />
                     </div>
                 </div>
             ) : (
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg p-6 text-white">
-                    <h2 className="text-2xl font-bold mb-2">Upgrade to Pro</h2>
-                    <p className="text-blue-100 mb-4">Unlock unlimited generations and premium features</p>
+                <div className="bg-white rounded-lg border border-slate-200 p-6">
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">Upgrade to Pro</h2>
+                    <p className="text-slate-500 mb-6">Unlock unlimited generations and premium features</p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <div className="flex items-start gap-2">
-                            <Check className="w-5 h-5 mt-0.5" />
-                            <span>Unlimited generations</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div className="flex items-start gap-3">
+                            <div className="h-5 w-5 rounded-full bg-slate-900 flex items-center justify-center mt-0.5">
+                                <Check className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-slate-700">Unlimited generations</span>
                         </div>
-                        <div className="flex items-start gap-2">
-                            <Check className="w-5 h-5 mt-0.5" />
-                            <span>High-res images (1024×1024)</span>
+                        <div className="flex items-start gap-3">
+                            <div className="h-5 w-5 rounded-full bg-slate-900 flex items-center justify-center mt-0.5">
+                                <Check className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-slate-700">High-res images (1024×1024)</span>
                         </div>
-                        <div className="flex items-start gap-2">
-                            <Check className="w-5 h-5 mt-0.5" />
-                            <span>Full history</span>
+                        <div className="flex items-start gap-3">
+                            <div className="h-5 w-5 rounded-full bg-slate-900 flex items-center justify-center mt-0.5">
+                                <Check className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-slate-700">Full history</span>
                         </div>
-                        <div className="flex items-start gap-2">
-                            <Check className="w-5 h-5 mt-0.5" />
-                            <span>Regenerate captions & images</span>
+                        <div className="flex items-start gap-3">
+                            <div className="h-5 w-5 rounded-full bg-slate-900 flex items-center justify-center mt-0.5">
+                                <Check className="w-3 h-3 text-white" />
+                            </div>
+                            <span className="text-slate-700">Regenerate captions & images</span>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between border-t border-slate-100 pt-6">
                         <div>
-                            <p className="text-3xl font-bold">$15</p>
-                            <p className="text-blue-100 text-sm">per month</p>
+                            <p className="text-3xl font-bold text-slate-900">$15</p>
+                            <p className="text-slate-500 text-sm">per month</p>
                         </div>
                         <UpgradeButton isPro={isPro} />
                     </div>

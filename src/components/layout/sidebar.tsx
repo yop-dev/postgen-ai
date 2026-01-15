@@ -85,39 +85,38 @@ export function Sidebar({ isPro = false, currentUsage = 0, className, onNavigate
                 isCollapsed && "justify-center px-0"
             )}>
                 <Link href="/app" className="flex items-center gap-3 group">
-                    <div className="relative h-10 w-10 min-w-10 rounded-xl overflow-hidden shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
+                    <div className="relative h-8 w-8 min-w-8 overflow-hidden transition-transform">
                         <NextImage
-                            src="/postgen-logo.jpg"
+                            src="/post-gen-logov2.jpg"
                             alt="PostGen AI Logo"
                             fill
                             className="object-cover"
                         />
                     </div>
                     {!isCollapsed && (
-                        <span className="text-xl font-bold text-slate-800 tracking-tight">PostGen AI</span>
+                        <span className="text-xl font-bold text-slate-900 tracking-tight">PostGen AI</span>
                     )}
                 </Link>
             </div>
 
             {/* Navigation */}
-            <div className="flex-1 px-4 space-y-2 py-4">
+            <div className="flex-1 px-4 space-y-1 py-4">
                 {navItems.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
                         onClick={onNavigate}
                         className={cn(
-                            "flex items-center gap-3 px-3 py-3 rounded-xl transition-all group",
+                            "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group",
                             pathname === item.href
-                                ? "bg-blue-50 text-blue-700 font-semibold"
+                                ? "bg-slate-100 text-slate-900 font-medium"
                                 : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
                         )}
                         title={isCollapsed ? item.label : ""}
                     >
                         <item.icon className={cn(
                             "h-5 w-5 transition-colors",
-                            pathname === item.href ? "text-blue-700" : item.color || "text-slate-500",
-                            !isCollapsed && "group-hover:scale-110"
+                            pathname === item.href ? "text-slate-900" : "text-slate-500 group-hover:text-slate-900",
                         )} />
                         {!isCollapsed && <span>{item.label}</span>}
                     </Link>
@@ -125,32 +124,32 @@ export function Sidebar({ isPro = false, currentUsage = 0, className, onNavigate
             </div>
 
             {/* Bottom Actions */}
-            <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+            <div className="p-4 border-t border-slate-100">
                 {!isCollapsed && (
                     isPro ? (
-                        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg">
+                        <div className="mb-4 p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
                             <div className="flex items-center gap-2 mb-2">
-                                <Crown className="h-4 w-4" />
-                                <p className="text-xs font-medium uppercase tracking-wider">Pro Plan</p>
+                                <Crown className="h-4 w-4 text-slate-900" />
+                                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Pro Plan</p>
                             </div>
-                            <h4 className="font-bold mb-2">Unlimited Access</h4>
-                            <p className="text-[10px] opacity-90">Generate as many posts as you want!</p>
+                            <h4 className="font-bold text-slate-900 text-lg mb-1">Unlimited Access</h4>
+                            <p className="text-xs text-slate-500 mb-4">Generate as many posts as you want!</p>
                             <Link href="/app/billing">
-                                <Button variant="secondary" size="sm" className="w-full mt-4 bg-white text-purple-600 hover:bg-purple-50 font-bold border-none shadow-sm">
+                                <Button variant="outline" size="sm" className="w-full h-9 border-slate-200 hover:bg-slate-50 hover:text-slate-900 font-medium text-xs">
                                     Manage Subscription
                                 </Button>
                             </Link>
                         </div>
                     ) : (
-                        <div className="mb-4 p-4 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-200">
-                            <p className="text-xs font-medium opacity-80 uppercase tracking-wider mb-1">Current Plan</p>
-                            <h4 className="font-bold mb-3">Free Tier</h4>
-                            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden mb-2">
-                                <div className="h-full bg-white transition-all" style={{ width: `${(currentUsage / 3) * 100}%` }} />
+                        <div className="mb-4 p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
+                            <p className="text-xs font-bold opacity-80 uppercase tracking-wider mb-2 text-slate-500">Current Plan</p>
+                            <h4 className="font-bold text-slate-900 mb-3">Free Tier</h4>
+                            <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mb-2">
+                                <div className="h-full bg-slate-900 transition-all" style={{ width: `${(currentUsage / 3) * 100}%` }} />
                             </div>
-                            <p className="text-[10px] opacity-90">{currentUsage}/3 free posts used</p>
+                            <p className="text-[10px] text-slate-500 font-medium">{currentUsage}/3 free posts used</p>
                             <Link href="/app/billing">
-                                <Button variant="secondary" size="sm" className="w-full mt-4 bg-white text-blue-600 hover:bg-blue-50 font-bold border-none shadow-sm">
+                                <Button className="w-full mt-4 bg-slate-900 text-white hover:bg-slate-800 h-9 text-xs font-medium">
                                     Upgrade to Pro
                                 </Button>
                             </Link>
