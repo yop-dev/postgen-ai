@@ -155,7 +155,6 @@ export async function POST(req: Request) {
                 variants: {
                     create: processedVariants.map((v: any) => ({
                         content: v.content,
-                        // @ts-ignore
                         imageUrl: v.imageUrl
                     }))
                 }
