@@ -10,10 +10,19 @@ export function Hero() {
 
     useEffect(() => {
         if (videoRef.current) {
-            videoRef.current.playbackRate = 0.75 // Slow down slightly for better effect
-            videoRef.current.play().catch(error => {
-                console.log("Video autoplay failed:", error)
-            })
+            // Critical for mobile autoplay: ensure muted is set on the DOM element
+            videoRef.current.defaultMuted = true
+            videoRef.current.muted = true
+            videoRef.current.playbackRate = 0.75
+
+            const playVideo = async () => {
+                try {
+                    await videoRef.current?.play()
+                } catch (error) {
+                    console.log("Video autoplay failed:", error)
+                }
+            }
+            playVideo()
         }
     }, [])
 

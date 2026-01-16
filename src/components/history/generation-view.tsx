@@ -89,24 +89,24 @@ export function GenerationView({ generation }: GenerationViewProps) {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-1">
-                    <Link href="/app/history" className="flex items-center text-sm text-slate-500 hover:text-slate-900 transition-colors mb-4">
+                    <Link href="/app/history" className="flex items-center text-sm text-slate-400 hover:text-white transition-colors mb-4">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         Back to history
                     </Link>
-                    <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight line-clamp-1">
-                        {generation.topic}
+                    <h1 className="text-3xl font-extrabold text-white tracking-tight line-clamp-1">
+                        Generated Post
                     </h1>
-                    <p className="text-slate-500">
+                    <p className="text-slate-400">
                         Generated on {new Date(generation.createdAt).toLocaleDateString()} • {generation.variants.length} Variants
                     </p>
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" className="rounded-xl border-slate-200 cursor-pointer">
+                    <Button variant="ghost" className="rounded-xl border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer bg-transparent">
                         <Share2 className="mr-2 h-4 w-4" />
                         Share
                     </Button>
-                    <Button onClick={handleDownloadImage} disabled={isDownloadingImage} className="bg-slate-900 hover:bg-slate-800 rounded-xl shadow-none cursor-pointer text-white">
+                    <Button onClick={handleDownloadImage} disabled={isDownloadingImage} className="bg-white hover:bg-slate-200 text-slate-900 rounded-xl shadow-none cursor-pointer">
                         <Download className="mr-2 h-4 w-4" />
                         {isDownloadingImage ? "Exporting..." : "Export"}
                     </Button>
@@ -118,13 +118,13 @@ export function GenerationView({ generation }: GenerationViewProps) {
                 <div className="lg:col-span-7 space-y-8">
                     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-slate-900">Choose Your Variant</h3>
-                            <TabsList className="bg-slate-100 p-1 rounded-xl">
+                            <h3 className="text-xl font-bold text-white">Choose Your Variant</h3>
+                            <TabsList className="bg-slate-900 p-1 rounded-xl border border-slate-800">
                                 {generation.variants.map((_: any, index: number) => (
                                     <TabsTrigger
                                         key={index}
                                         value={`variant-${index}`}
-                                        className="rounded-lg px-4 font-bold data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm cursor-pointer"
+                                        className="rounded-lg px-4 font-bold data-[state=active]:bg-slate-800 data-[state=active]:text-white data-[state=active]:shadow-sm cursor-pointer text-slate-400"
                                     >
                                         v{index + 1}
                                     </TabsTrigger>
@@ -136,7 +136,7 @@ export function GenerationView({ generation }: GenerationViewProps) {
                             const variantImage = variant.imageUrl || generation.imageUrl;
                             return (
                                 <TabsContent key={variant.id} value={`variant-${index}`} className="mt-0 focus-visible:ring-0">
-                                    <div className="flex justify-center bg-slate-100 rounded-[2.5rem] p-8 md:p-12 border border-slate-200 shadow-inner">
+                                    <div className="flex justify-center bg-slate-900 rounded-[2.5rem] p-8 md:p-12 border border-slate-800 shadow-inner">
                                         {/* Only render preview if active to save bandwidth/rate limits */}
                                         {activeTab === `variant-${index}` && (
                                             <LinkedInPreview
@@ -153,7 +153,7 @@ export function GenerationView({ generation }: GenerationViewProps) {
 
                 {/* Right: Controls/Info */}
                 <div className="lg:col-span-5 space-y-6">
-                    <Card className="rounded-[2rem] border-slate-200 shadow-sm overflow-hidden bg-white">
+                    <Card className="rounded-[2rem] border-slate-800 shadow-sm overflow-hidden bg-slate-900">
                         <CardContent className="p-8 space-y-8">
                             <div>
                                 <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Post Details</h4>
@@ -164,20 +164,20 @@ export function GenerationView({ generation }: GenerationViewProps) {
                                 </div>
                             </div>
 
-                            <div className="pt-8 border-t border-slate-100">
+                            <div className="pt-8 border-t border-slate-800">
                                 <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Original Topic</h4>
-                                <div className="bg-slate-50 rounded-2xl p-4 text-slate-600 text-sm italic leading-relaxed">
+                                <div className="bg-slate-950 rounded-2xl p-4 text-slate-300 text-sm italic leading-relaxed border border-slate-800">
                                     "{generation.topic}"
                                 </div>
                             </div>
 
-                            <div className="pt-8 border-t border-slate-100 space-y-4">
+                            <div className="pt-8 border-t border-slate-800 space-y-4">
                                 <Button
                                     variant="outline"
                                     onClick={handleCopyCaption}
-                                    className="w-full h-12 rounded-xl border-slate-200 font-bold group hover:border-slate-300 hover:text-slate-900 cursor-pointer"
+                                    className="w-full h-12 rounded-xl border-slate-800 bg-transparent text-slate-300 font-bold group hover:border-slate-700 hover:bg-slate-800 hover:text-white cursor-pointer"
                                 >
-                                    <Copy className="mr-2 h-4 w-4 text-slate-500 group-hover:text-slate-900 transition-colors" />
+                                    <Copy className="mr-2 h-4 w-4 text-slate-500 group-hover:text-white transition-colors" />
                                     Copy Current Caption
                                 </Button>
 
@@ -186,12 +186,12 @@ export function GenerationView({ generation }: GenerationViewProps) {
                                         variant="outline"
                                         onClick={handleDownloadImage}
                                         disabled={isDownloadingImage}
-                                        className="w-full h-12 rounded-xl border-slate-200 font-bold group hover:border-slate-300 hover:text-slate-900 cursor-pointer"
+                                        className="w-full h-12 rounded-xl border-slate-800 bg-transparent text-slate-300 font-bold group hover:border-slate-700 hover:bg-slate-800 hover:text-white cursor-pointer"
                                     >
                                         {isDownloadingImage ? (
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                         ) : (
-                                            <Download className="mr-2 h-4 w-4 text-slate-500 group-hover:text-slate-900 transition-colors" />
+                                            <Download className="mr-2 h-4 w-4 text-slate-500 group-hover:text-white transition-colors" />
                                         )}
                                         {isDownloadingImage ? "Saving..." : "Save Image"}
                                     </Button>
@@ -204,7 +204,7 @@ export function GenerationView({ generation }: GenerationViewProps) {
                         </CardContent>
                     </Card>
 
-                    <div className="bg-slate-900 rounded-[2rem] p-8 text-white shadow-xl shadow-slate-200 relative overflow-hidden group">
+                    <div className="bg-slate-900 rounded-[2rem] p-8 text-white shadow-xl shadow-slate-950/50 relative overflow-hidden group border border-slate-800">
                         <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform">
                             <Sparkles className="h-20 w-20" />
                         </div>
@@ -227,8 +227,8 @@ export function GenerationView({ generation }: GenerationViewProps) {
 function DetailRow({ label, value }: { label: string, value: string }) {
     return (
         <div className="flex items-center justify-between">
-            <span className="text-slate-500 font-medium">{label}</span>
-            <span className="bg-slate-100 px-3 py-1 rounded-full text-xs font-bold text-slate-700 capitalize">
+            <span className="text-slate-400 font-medium">{label}</span>
+            <span className="bg-slate-800 px-3 py-1 rounded-full text-xs font-bold text-slate-300 border border-slate-700 capitalize">
                 {value.toLowerCase()}
             </span>
         </div>
