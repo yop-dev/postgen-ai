@@ -1,4 +1,7 @@
+"use client"
+
 import { Zap, Camera, Eye, MousePointer2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 const features = [
     {
@@ -27,41 +30,68 @@ const features = [
     },
 ]
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.2,
+        },
+    },
+}
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.6,
+        },
+    },
+}
+
 export function Features() {
     return (
-        <section id="features" className="py-24 bg-slate-50">
+        <section id="features" className="py-24 bg-slate-950">
             <div className="container mx-auto px-6">
-                <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-                    <h2 className="text-slate-700 font-bold uppercase tracking-wider text-sm">Features</h2>
-                    <h3 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+                <motion.div
+                    className="text-center max-w-2xl mx-auto mb-16 space-y-4"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                >
+                    <motion.h2 variants={itemVariants} className="text-slate-300 font-bold uppercase tracking-wider text-sm">Features</motion.h2>
+                    <motion.h3 variants={itemVariants} className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
                         Everything you need to <br className="hidden md:block" />
-                        <span className="text-slate-700">
+                        <span className="text-slate-300">
                             stand out on LinkedIn
                         </span>
-                    </h3>
-                    <p className="text-lg text-slate-600">
-                        Stop guessing and start creating high-impact content that resonates with your audience.
-                    </p>
-                </div>
+                    </motion.h3>
+                </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                >
                     {features.map((feature, index) => (
-                        <div
+                        <motion.div
                             key={index}
-                            className="group bg-white rounded-2xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-300"
+                            variants={itemVariants}
+                            className="group p-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-slate-700 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50"
                         >
-                            <div className={`w-12 h-12 ${feature.color} rounded-xl flex items-center justify-center mb-6 shadow-lg shadow-slate-200 group-hover:scale-110 transition-transform`}>
+                            <div className={`${feature.color} w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                                 <feature.icon className="h-6 w-6 text-white" />
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-slate-700 transition-colors">
-                                {feature.title}
-                            </h4>
-                            <p className="text-slate-600 leading-relaxed">
-                                {feature.description}
-                            </p>
-                        </div>
+                            <h4 className="text-xl font-bold text-white mb-2">{feature.title}</h4>
+                            <p className="text-slate-400 leading-relaxed">{feature.description}</p>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     )

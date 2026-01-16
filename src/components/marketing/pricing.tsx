@@ -1,6 +1,9 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Check } from "lucide-react"
 import Link from "next/link"
+import { motion } from "framer-motion"
 
 const plans = [
     {
@@ -29,75 +32,108 @@ const plans = [
             "Regenerate captions & images",
             "Priority AI processing",
         ],
-        cta: "Go Pro",
+        cta: "Upgrade to Pro",
         href: "/sign-up",
         popular: true,
     },
 ]
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.2,
+        },
+    },
+}
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.6,
+        },
+    },
+}
+
 export function Pricing() {
     return (
-        <section id="pricing" className="py-24">
+        <section id="pricing" className="py-24 bg-slate-950">
             <div className="container mx-auto px-6">
-                <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-                    <h2 className="text-slate-700 font-bold uppercase tracking-wider text-sm">Pricing</h2>
-                    <h3 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+                <motion.div
+                    className="text-center max-w-2xl mx-auto mb-16 space-y-4"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                >
+                    <motion.h2 variants={itemVariants} className="text-slate-300 font-bold uppercase tracking-wider text-sm">Pricing</motion.h2>
+                    <motion.h3 variants={itemVariants} className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
                         Simple, transparent pricing
-                    </h3>
-                    <p className="text-lg text-slate-600">
+                    </motion.h3>
+                    <motion.p variants={itemVariants} className="text-lg text-slate-400">
                         Start free and upgrade as you grow. No hidden fees.
-                    </p>
-                </div>
+                    </motion.p>
+                </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <motion.div
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
+                    variants={containerVariants}
+                >
                     {plans.map((plan, index) => (
-                        <div
+                        <motion.div
                             key={index}
-                            className={`relative flex flex-col p-8 rounded-3xl border ${plan.popular
-                                ? "border-slate-900 shadow-2xl scale-105 z-10 bg-white"
-                                : "border-slate-200 bg-white shadow-lg"
-                                }`}
+                            variants={itemVariants}
+                            className={`relative p-8 rounded-2xl border ${plan.popular
+                                ? "bg-slate-900/70 border-slate-700 shadow-2xl shadow-slate-900/50"
+                                : "bg-slate-900/50 border-slate-800"
+                                } transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50`}
                         >
                             {plan.popular && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-slate-700 to-slate-800 text-white text-sm font-semibold rounded-full border border-slate-600">
                                     Most Popular
                                 </div>
                             )}
 
-                            <div className="mb-8">
-                                <h4 className="text-2xl font-bold text-slate-900 mb-2">{plan.name}</h4>
-                                <p className="text-slate-500">{plan.description}</p>
+                            <div className="mb-6">
+                                <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
+                                <p className="text-slate-400 text-sm">{plan.description}</p>
                             </div>
 
-                            <div className="mb-8 flex items-baseline gap-1">
-                                <span className="text-4xl font-extrabold text-slate-900">${plan.price}</span>
-                                <span className="text-slate-500 font-medium">/month</span>
+                            <div className="mb-6">
+                                <span className="text-5xl font-extrabold text-white">${plan.price}</span>
+                                <span className="text-slate-400 ml-2">/month</span>
                             </div>
 
-                            <ul className="space-y-4 mb-8 flex-1">
-                                {plan.features.map((feature, fIndex) => (
-                                    <li key={fIndex} className="flex items-start gap-3 text-slate-600">
-                                        <div className="mt-1 bg-slate-100 rounded-full p-0.5">
-                                            <Check className="h-4 w-4 text-slate-700" />
-                                        </div>
-                                        <span>{feature}</span>
+                            <ul className="space-y-4 mb-8">
+                                {plan.features.map((feature, featureIndex) => (
+                                    <li key={featureIndex} className="flex items-start gap-3">
+                                        <Check className="h-5 w-5 text-slate-400 flex-shrink-0 mt-0.5" />
+                                        <span className="text-slate-300">{feature}</span>
                                     </li>
                                 ))}
                             </ul>
 
-                            <Link href={plan.href} className="w-full">
+                            <Link href={plan.href} className="block">
                                 <Button
-                                    className={`w-full h-12 text-lg font-bold transition-all ${plan.popular
-                                        ? "bg-slate-900 hover:bg-slate-800 shadow-lg shadow-slate-200"
-                                        : "bg-slate-900 hover:bg-slate-800"
+                                    className={`w-full ${plan.popular
+                                        ? "bg-white hover:bg-slate-100 text-slate-900"
+                                        : "bg-slate-800 hover:bg-slate-700 text-white border border-slate-700"
                                         }`}
+                                    size="lg"
                                 >
                                     {plan.cta}
                                 </Button>
                             </Link>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     )
