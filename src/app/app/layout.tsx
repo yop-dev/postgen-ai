@@ -24,7 +24,7 @@ export default async function AppLayout({
     }
 
     return (
-        <div className="flex h-screen overflow-hidden bg-slate-50 font-sans">
+        <div className="flex h-screen overflow-hidden bg-slate-950 font-sans">
             {/* Desktop Sidebar - Hidden on mobile */}
             <Sidebar isPro={isPro} currentUsage={currentUsage} className="hidden md:flex" />
 

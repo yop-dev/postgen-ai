@@ -61,7 +61,7 @@ export function UpgradeButton({ isPro }: UpgradeButtonProps) {
             <Button
                 onClick={handleManageSubscription}
                 disabled={loading}
-                className="bg-white text-slate-900 hover:bg-slate-100 border border-white gap-2"
+                className="bg-white text-slate-900 hover:bg-slate-200 border border-white gap-2"
             >
                 {loading ? (
                     <>

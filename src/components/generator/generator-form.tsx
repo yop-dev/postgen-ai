@@ -77,17 +77,17 @@ export function GeneratorForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-sm">
                 <FormField
                     control={form.control}
                     name="topic"
                     render={({ field }: { field: any }) => (
                         <FormItem>
-                            <FormLabel className="text-lg font-bold text-slate-900">What do you want to post about?</FormLabel>
+                            <FormLabel className="text-lg font-bold text-white">What do you want to post about?</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="E.g., Share the 5 biggest mistakes founders make in their first year..."
-                                    className="min-h-[150px] rounded-2xl border-slate-200 focus:ring-slate-900 text-base"
+                                    className="min-h-[150px] rounded-2xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-base text-white placeholder:text-slate-500"
                                     {...field}
                                 />
                             </FormControl>
@@ -102,14 +102,14 @@ export function GeneratorForm() {
                         name="objective"
                         render={({ field }: { field: any }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900">Target Objective</FormLabel>
+                                <FormLabel className="font-bold text-white">Target Objective</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="h-12 rounded-xl border-slate-200 focus:ring-slate-900">
+                                        <SelectTrigger className="h-12 rounded-xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-white">
                                             <SelectValue placeholder="Select an objective" />
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="rounded-xl">
+                                    <SelectContent className="rounded-xl bg-slate-900 border-slate-800 text-white">
                                         {OBJECTIVES.map((obj) => (
                                             <SelectItem key={obj.value} value={obj.value} className="py-3">
                                                 {obj.label}
@@ -127,14 +127,14 @@ export function GeneratorForm() {
                         name="tone"
                         render={({ field }: { field: any }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900">Post Tone</FormLabel>
+                                <FormLabel className="font-bold text-white">Post Tone</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="h-12 rounded-xl border-slate-200 focus:ring-slate-900">
+                                        <SelectTrigger className="h-12 rounded-xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-white">
                                             <SelectValue placeholder="Select a tone" />
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="rounded-xl">
+                                    <SelectContent className="rounded-xl bg-slate-900 border-slate-800 text-white">
                                         {TONES.map((tone) => (
                                             <SelectItem key={tone.value} value={tone.value} className="py-3">
                                                 {tone.label}
@@ -154,11 +154,11 @@ export function GeneratorForm() {
                         name="minWords"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900">Min Words</FormLabel>
+                                <FormLabel className="font-bold text-white">Min Words</FormLabel>
                                 <FormControl>
                                     <input
                                         type="number"
-                                        className="w-full h-12 rounded-xl border border-slate-200 px-3 bg-transparent text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-900 placeholder:text-slate-400"
+                                        className="w-full h-12 rounded-xl border border-slate-700 px-3 bg-slate-950 text-white text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-700 placeholder:text-slate-500"
                                         {...field}
                                         value={field.value ?? ''}
                                         onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
@@ -174,11 +174,11 @@ export function GeneratorForm() {
                         name="maxWords"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900">Max Words</FormLabel>
+                                <FormLabel className="font-bold text-white">Max Words</FormLabel>
                                 <FormControl>
                                     <input
                                         type="number"
-                                        className="w-full h-12 rounded-xl border border-slate-200 px-3 bg-transparent text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-900 placeholder:text-slate-400"
+                                        className="w-full h-12 rounded-xl border border-slate-700 px-3 bg-slate-950 text-white text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-700 placeholder:text-slate-500"
                                         {...field}
                                         value={field.value ?? ''}
                                         onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
@@ -194,14 +194,14 @@ export function GeneratorForm() {
                         name="variantCount"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className="font-bold text-slate-900">Variants</FormLabel>
+                                <FormLabel className="font-bold text-white">Variants</FormLabel>
                                 <Select onValueChange={(val) => field.onChange(parseInt(val))} defaultValue={field.value?.toString()}>
                                     <FormControl>
-                                        <SelectTrigger className="h-12 rounded-xl border-slate-200 focus:ring-slate-900">
+                                        <SelectTrigger className="h-12 rounded-xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-white">
                                             <SelectValue placeholder="1" />
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="rounded-xl">
+                                    <SelectContent className="rounded-xl bg-slate-900 border-slate-800 text-white">
                                         {[1, 2, 3].map((num) => (
                                             <SelectItem key={num} value={num.toString()} className="py-3">
                                                 {num}
@@ -220,16 +220,17 @@ export function GeneratorForm() {
                     control={form.control}
                     name="personalize"
                     render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-slate-200 p-4">
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-slate-800 bg-slate-950/50 p-4">
                             <FormControl>
                                 <Checkbox
                                     checked={field.value}
                                     onCheckedChange={field.onChange}
+                                    className="border-slate-600 data-[state=checked]:bg-slate-200 data-[state=checked]:text-slate-900"
                                 />
                             </FormControl>
                             <div className="space-y-1 leading-none">
                                 <div className="flex items-center gap-2">
-                                    <FormLabel className="font-semibold text-slate-900">
+                                    <FormLabel className="font-semibold text-white">
                                         Personalize with my profile
                                     </FormLabel>
                                     <TooltipProvider>
@@ -251,7 +252,7 @@ export function GeneratorForm() {
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-14 text-lg font-bold bg-slate-900 hover:bg-slate-800 shadow-none rounded-2xl group transition-all"
+                    className="w-full h-14 text-lg font-bold bg-white text-slate-900 hover:bg-slate-200 shadow-none rounded-2xl group transition-all"
                 >
                     {isLoading ? (
                         <>

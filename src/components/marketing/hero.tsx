@@ -1,15 +1,28 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 
 export function Hero() {
+    const videoRef = useRef<HTMLVideoElement>(null)
+
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = 0.75 // Slow down slightly for better effect
+            videoRef.current.play().catch(error => {
+                console.log("Video autoplay failed:", error)
+            })
+        }
+    }, [])
+
     return (
         <section className="relative min-h-screen overflow-hidden bg-slate-950">
             {/* Background Video - Exact same approach as portfolio */}
             <div className="absolute inset-0 z-0">
                 <video
+                    ref={videoRef}
                     className="w-full h-full object-cover"
                     autoPlay
                     loop

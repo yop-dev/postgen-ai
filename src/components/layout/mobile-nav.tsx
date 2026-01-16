@@ -14,7 +14,7 @@ export function MobileNav({ isPro, currentUsage }: MobileNavProps) {
     const [open, setOpen] = useState(false)
 
     return (
-        <header className="md:hidden sticky top-0 z-50 flex items-center justify-between p-4 border-b bg-white">
+        <header className="md:hidden sticky top-0 z-50 flex items-center justify-between p-4 border-b border-slate-800 bg-slate-950">
             <div className="flex items-center gap-2">
                 <div className="relative h-8 w-8 rounded-lg overflow-hidden">
                     <NextImage
@@ -24,15 +24,15 @@ export function MobileNav({ isPro, currentUsage }: MobileNavProps) {
                         className="object-cover"
                     />
                 </div>
-                <h2 className="font-bold text-slate-900 leading-tight">PostGen AI</h2>
+                <h2 className="font-bold text-white leading-tight">PostGen AI</h2>
             </div>
 
             <button
                 onClick={() => setOpen(true)}
-                className="p-2 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                className="p-2 hover:bg-slate-900 rounded-lg transition-colors cursor-pointer"
                 aria-label="Open menu"
             >
-                <Menu className="h-6 w-6 text-slate-600" />
+                <Menu className="h-6 w-6 text-slate-400" />
             </button>
 
             {/* Mobile Drawer */}
@@ -45,13 +45,13 @@ export function MobileNav({ isPro, currentUsage }: MobileNavProps) {
                     />
 
                     {/* Sidebar Container */}
-                    <div className="relative w-[280px] bg-white h-full animate-in slide-in-from-left duration-200 shadow-xl">
+                    <div className="relative w-[280px] bg-slate-950 h-full animate-in slide-in-from-left duration-200 shadow-xl border-r border-slate-800">
                         <div className="absolute top-2 right-2 z-50">
                             <button
                                 onClick={() => setOpen(false)}
-                                className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
+                                className="p-2 hover:bg-slate-900 rounded-full transition-colors cursor-pointer"
                             >
-                                <X className="h-5 w-5 text-slate-500" />
+                                <X className="h-5 w-5 text-slate-400" />
                             </button>
                         </div>
 

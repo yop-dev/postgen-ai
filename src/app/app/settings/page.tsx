@@ -18,8 +18,8 @@ export default async function SettingsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-slate-900">Settings</h1>
-                <p className="text-slate-500 mt-2">Manage your account and preferences</p>
+                <h1 className="text-3xl font-bold text-white">Settings</h1>
+                <p className="text-slate-400 mt-2">Manage your account and preferences</p>
             </div>
 
             <SettingsForm
