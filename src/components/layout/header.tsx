@@ -1,6 +1,7 @@
 "use client"
 
 import NextImage from "next/image"
+import Link from "next/link"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 
@@ -10,7 +11,7 @@ export function Header() {
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950 backdrop-blur-md">
             <div className="container mx-auto flex h-16 items-center justify-between px-6">
-                <div className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                     <div className="relative h-8 w-8 rounded-lg overflow-hidden">
                         <NextImage
                             src="/post-gen-logov2.jpg"
@@ -20,7 +21,7 @@ export function Header() {
                         />
                     </div>
                     <span className="text-xl font-bold text-white tracking-tight">PostGen AI</span>
-                </div>
+                </Link>
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8">
