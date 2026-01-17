@@ -109,8 +109,8 @@ export default async function AppDashboard() {
 
                 <div className="relative max-w-2xl mx-auto space-y-6 z-10">
                     <h2 className="text-3xl font-bold tracking-tight text-white">
-                        Stop the scroll <br />
-                        with InFrame
+                        See your LinkedIn post <br />
+                        before the world does.
                     </h2>
                     <p className="text-slate-400">
                         Create professional, high-converting LinkedIn content in seconds.
