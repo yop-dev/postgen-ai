@@ -4,10 +4,11 @@ import { Toaster } from 'sonner'
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "PostGen AI — Preview Your LinkedIn Post Before Publishing",
-    description: "Generate professional LinkedIn posts with AI. Create captions, images, and preview exactly how your post will look.",
+    title: "InFrame — Preview Your LinkedIn Post Before Publishing",
+    description: "Create stunning, high-converting LinkedIn posts in seconds with AI-powered captions and visuals.",
+    keywords: ["LinkedIn", "Social Media", "AI", "Content Creation", "Marketing"],
     openGraph: {
-        title: "PostGen AI",
+        title: "InFrame",
         description: "See your LinkedIn post before you publish it",
     },
     icons: {

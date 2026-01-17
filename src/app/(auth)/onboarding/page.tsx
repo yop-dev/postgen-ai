@@ -11,7 +11,7 @@ export default function OnboardingPage() {
                     </div>
                     <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
                         Let's personalize your <br />
-                        <span className="text-blue-600">PostGen</span> experience
+                        <span className="text-blue-600">InFrame</span> experience
                     </h1>
                     <p className="text-slate-500">
                         A few details will help us generate more relevant posts for your personal brand.

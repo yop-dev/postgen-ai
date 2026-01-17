@@ -15,12 +15,12 @@ export function Header() {
                     <div className="relative h-8 w-8 rounded-lg overflow-hidden">
                         <NextImage
                             src="/post-gen-logov2.jpg"
-                            alt="PostGen AI Logo"
+                            alt="InFrame Logo"
                             fill
                             className="object-cover"
                         />
                     </div>
-                    <span className="text-xl font-bold text-white tracking-tight">PostGen AI</span>
+                    <span className="text-xl font-bold text-white tracking-tight">InFrame</span>
                 </Link>
 
                 {/* Desktop Nav */}

@@ -9,12 +9,13 @@ export function Footer() {
                         <div className="flex items-center gap-2">
                             <Image
                                 src="/post-gen-logov2.jpg"
-                                alt="PostGen AI Logo"
-                                width={32}
-                                height={32}
-                                className="h-8 w-8 rounded-full"
+                                alt="InFrame Logo"
+                                fill
+                                className="object-cover"
                             />
-                            <span className="font-bold text-white tracking-tight">PostGen AI</span>
+                        </div>
+                        <div>
+                            <span className="font-bold text-white tracking-tight">InFrame</span>
                         </div>
                         <p className="text-sm text-slate-400 leading-relaxed">
                             Empowering creators to master LinkedIn <br className="hidden lg:block" />
@@ -52,7 +53,7 @@ export function Footer() {
                 </div>
 
                 <div className="mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
-                    <p>© 2026 PostGen AI. Built for high-impact content creators.</p>
+                    <p>© 2026 InFrame. Built for high-impact content creators.</p>
                     <div className="flex gap-6">
                         <span>English (US)</span>
                         <span>Server Status: Online</span>

@@ -52,7 +52,7 @@ export function CTA() {
                     </motion.h2>
 
                     <motion.p variants={itemVariants} className="text-xl text-slate-400 max-w-2xl mx-auto">
-                        Join other creators who use PostGen AI to craft professional,
+                        Join other creators who use InFrame to craft professional,
                         high-converting LinkedIn content in seconds.
                     </motion.p>
 

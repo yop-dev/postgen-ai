@@ -19,12 +19,12 @@ export function MobileNav({ isPro, currentUsage }: MobileNavProps) {
                 <div className="relative h-8 w-8 rounded-lg overflow-hidden">
                     <NextImage
                         src="/post-gen-logov2.jpg"
-                        alt="PostGen AI Logo"
+                        alt="InFrame Logo"
                         fill
                         className="object-cover"
                     />
                 </div>
-                <h2 className="font-bold text-white leading-tight">PostGen AI</h2>
+                <h2 className="font-bold text-white leading-tight">InFrame</h2>
             </div>
 
             <button

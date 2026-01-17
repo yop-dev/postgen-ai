@@ -88,13 +88,13 @@ export function Sidebar({ isPro = false, currentUsage = 0, className, onNavigate
                     <div className="relative h-8 w-8 min-w-8 overflow-hidden transition-transform">
                         <NextImage
                             src="/post-gen-logov2.jpg"
-                            alt="PostGen AI Logo"
+                            alt="InFrame Logo"
                             fill
                             className="object-cover"
                         />
                     </div>
                     {!isCollapsed && (
-                        <span className="text-xl font-bold text-white tracking-tight">PostGen AI</span>
+                        <span className="text-xl font-bold text-white tracking-tight">InFrame</span>
                     )}
                 </Link>
             </div>

@@ -110,7 +110,7 @@ export default async function AppDashboard() {
                 <div className="relative max-w-2xl mx-auto space-y-6 z-10">
                     <h2 className="text-3xl font-bold tracking-tight text-white">
                         Stop the scroll <br />
-                        with PostGen AI
+                        with InFrame
                     </h2>
                     <p className="text-slate-400">
                         Create professional, high-converting LinkedIn content in seconds.
