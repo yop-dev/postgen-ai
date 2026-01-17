@@ -77,17 +77,17 @@ export function GeneratorForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-sm">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-slate-900 rounded-[2rem] p-6 border border-slate-800 shadow-sm">
                 <FormField
                     control={form.control}
                     name="topic"
                     render={({ field }: { field: any }) => (
                         <FormItem>
-                            <FormLabel className="text-lg font-bold text-white">What do you want to post about?</FormLabel>
+                            <FormLabel className="text-base font-bold text-white">What do you want to post about?</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="E.g., Share the 5 biggest mistakes founders make in their first year..."
-                                    className="min-h-[150px] rounded-2xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-base text-white placeholder:text-slate-500"
+                                    className="min-h-[120px] rounded-2xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-sm text-white placeholder:text-slate-500"
                                     {...field}
                                 />
                             </FormControl>
@@ -105,7 +105,7 @@ export function GeneratorForm() {
                                 <FormLabel className="font-bold text-white">Target Objective</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="h-12 rounded-xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-white">
+                                        <SelectTrigger className="h-11 rounded-xl border-slate-700 bg-slate-950 focus:ring-slate-700 text-white text-sm">
                                             <SelectValue placeholder="Select an objective" />
                                         </SelectTrigger>
                                     </FormControl>
