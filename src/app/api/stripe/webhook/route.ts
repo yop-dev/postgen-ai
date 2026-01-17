@@ -29,10 +29,16 @@ export async function POST(req: Request) {
     const subscription = event.data.object as Stripe.Subscription
 
     try {
+        console.log('[STRIPE_WEBHOOK] Event type:', event.type)
+
         switch (event.type) {
             case "checkout.session.completed":
                 // Payment successful, upgrade user to PRO
+                console.log('[STRIPE_WEBHOOK] Checkout completed, metadata:', session.metadata)
+
                 if (session.metadata?.userId) {
+                    console.log('[STRIPE_WEBHOOK] Updating user:', session.metadata.userId)
+
                     await db.user.update({
                         where: { id: session.metadata.userId },
                         data: {
@@ -42,6 +48,8 @@ export async function POST(req: Request) {
                         },
                     })
                     console.log(`[STRIPE] User ${session.metadata.userId} upgraded to PRO`)
+                } else {
+                    console.error('[STRIPE_WEBHOOK] No userId in metadata!')
                 }
                 break
 
