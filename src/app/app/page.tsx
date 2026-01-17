@@ -20,18 +20,31 @@ export default async function AppDashboard() {
 
     // Fallback: Create user if they don't exist (webhook might have failed)
     if (!user) {
-        user = await db.user.create({
-            data: {
-                clerkId: clerkUser.id,
-                email: clerkUser.emailAddresses[0].emailAddress,
-                usage: {
-                    create: {
-                        lifetimeCount: 0,
+        const email = clerkUser.emailAddresses?.[0]?.emailAddress
+
+        if (!email) {
+            console.error("No email found for user:", clerkUser.id)
+            // Return null or redirect - can't create user without email
+            return null
+        }
+
+        try {
+            user = await db.user.create({
+                data: {
+                    clerkId: clerkUser.id,
+                    email: email,
+                    usage: {
+                        create: {
+                            lifetimeCount: 0,
+                        },
                     },
                 },
-            },
-            include: { usage: true }
-        })
+                include: { usage: true }
+            })
+        } catch (error) {
+            console.error("Failed to create user:", error)
+            return null
+        }
     }
 
     const isPro = user?.plan === "PRO"

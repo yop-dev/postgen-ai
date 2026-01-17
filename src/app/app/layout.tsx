@@ -25,18 +25,26 @@ export default async function AppLayout({
 
         // Fallback: Create user if they don't exist (webhook might have failed)
         if (!user && clerkUser) {
-            user = await db.user.create({
-                data: {
-                    clerkId: userId,
-                    email: clerkUser.emailAddresses[0].emailAddress,
-                    usage: {
-                        create: {
-                            lifetimeCount: 0,
+            const email = clerkUser.emailAddresses?.[0]?.emailAddress
+
+            if (email) {
+                try {
+                    user = await db.user.create({
+                        data: {
+                            clerkId: userId,
+                            email: email,
+                            usage: {
+                                create: {
+                                    lifetimeCount: 0,
+                                },
+                            },
                         },
-                    },
-                },
-                include: { usage: true }
-            })
+                        include: { usage: true }
+                    })
+                } catch (error) {
+                    console.error("Failed to create user in layout:", error)
+                }
+            }
         }
 
         isPro = user?.plan === "PRO"
