@@ -13,8 +13,11 @@ const config: Config = {
                 foreground: "var(--foreground)",
             },
             animation: {
-                'gradient': 'gradient 15s ease infinite',
-                'blob': 'blob 20s infinite',
+                "gradient-shift": "gradient-shift 15s ease infinite",
+                "blob-bounce": "blob-bounce 7s infinite",
+            },
+            backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
             },
             keyframes: {
                 gradient: {

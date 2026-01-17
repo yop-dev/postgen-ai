@@ -31,9 +31,16 @@ export default async function AppLayout({
             <div className="flex flex-col flex-1 overflow-hidden">
                 {/* Mobile Header (Hidden on Laptop) */}
                 <MobileNav isPro={isPro} currentUsage={currentUsage} />
+                {/* Main Content with Gradient Overlay */}
+                <main className="relative flex-1 overflow-auto">
+                    {/* Gradient Overlay - similar to video effect */}
+                    <div className="fixed inset-0 pointer-events-none z-0">
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/15 via-purple-500/5 to-purple-500/15" />
+                        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-blue-400/20 to-transparent blur-3xl" />
+                        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-purple-400/20 to-transparent blur-3xl" />
+                    </div>
 
-                <main className="flex-1 overflow-y-auto overflow-x-hidden relative h-full">
-                    <div className="max-w-7xl mx-auto p-4 md:p-8 min-h-full">
+                    <div className="relative z-10 container mx-auto p-6 md:p-10 min-h-full">
                         {children}
                     </div>
                 </main>
