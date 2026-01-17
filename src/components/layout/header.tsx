@@ -12,12 +12,13 @@ export function Header() {
         <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950 backdrop-blur-md">
             <div className="container mx-auto flex h-16 items-center justify-between px-6">
                 <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <div className="relative h-8 w-8 rounded-lg overflow-hidden">
+                    <div className="h-8 w-8 rounded-lg overflow-hidden flex-shrink-0">
                         <NextImage
                             src="/post-gen-logov2.jpg"
                             alt="InFrame Logo"
-                            fill
-                            className="object-cover"
+                            width={32}
+                            height={32}
+                            className="object-cover w-full h-full"
                         />
                     </div>
                     <span className="text-xl font-bold text-white tracking-tight">InFrame</span>

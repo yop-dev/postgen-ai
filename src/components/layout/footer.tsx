@@ -7,12 +7,15 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
                     <div className="col-span-1 md:col-span-1 space-y-4">
                         <div className="flex items-center gap-2">
-                            <Image
-                                src="/post-gen-logov2.jpg"
-                                alt="InFrame Logo"
-                                fill
-                                className="object-cover"
-                            />
+                            <div className="h-8 w-8 rounded-lg overflow-hidden flex-shrink-0">
+                                <Image
+                                    src="/post-gen-logov2.jpg"
+                                    alt="InFrame Logo"
+                                    width={32}
+                                    height={32}
+                                    className="object-cover w-full h-full"
+                                />
+                            </div>
                         </div>
                         <div>
                             <span className="font-bold text-white tracking-tight">InFrame</span>
