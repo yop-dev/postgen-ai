@@ -93,15 +93,18 @@ export function Hero() {
                     <div className="relative">
                         {/* Mockup Preview */}
                         <div className="relative rounded-2xl border border-slate-700 bg-slate-900/30 p-4 shadow-2xl backdrop-blur-sm">
-                            <div className="rounded-xl border border-slate-700 bg-slate-800/50 overflow-hidden aspect-video flex items-center justify-center">
-                                <div className="text-slate-400 text-center space-y-4">
-                                    <div className="h-12 w-12 rounded-full bg-slate-700 mx-auto animate-pulse" />
-                                    <div className="space-y-2">
-                                        <div className="h-4 w-48 bg-slate-700 rounded animate-pulse" />
-                                        <div className="h-4 w-32 bg-slate-700 rounded animate-pulse mx-auto" />
-                                    </div>
-                                    <p className="text-sm font-medium">Interactive LinkedIn Preview Mockup coming soon...</p>
-                                </div>
+                            <div className="rounded-xl border border-slate-700 bg-slate-800/50 overflow-hidden aspect-video relative group">
+                                <video
+                                    className="w-full h-full object-cover"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    preload="auto"
+                                >
+                                    <source src="/0117.mp4" type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
                             </div>
                         </div>
 
