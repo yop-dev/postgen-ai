@@ -29,20 +29,40 @@ export default async function AppLayout({
 
             if (email) {
                 try {
-                    user = await db.user.create({
-                        data: {
-                            clerkId: userId,
-                            email: email,
-                            usage: {
-                                create: {
-                                    lifetimeCount: 0,
-                                },
-                            },
-                        },
+                    // Try to find user by email in case they exist but with different clerkId
+                    const existingUser = await db.user.findUnique({
+                        where: { email: email },
                         include: { usage: true }
                     })
+
+                    if (existingUser) {
+                        // Update clerkId if it's different
+                        if (existingUser.clerkId !== userId) {
+                            user = await db.user.update({
+                                where: { id: existingUser.id },
+                                data: { clerkId: userId },
+                                include: { usage: true }
+                            })
+                        } else {
+                            user = existingUser
+                        }
+                    } else {
+                        // Create new user
+                        user = await db.user.create({
+                            data: {
+                                clerkId: userId,
+                                email: email,
+                                usage: {
+                                    create: {
+                                        lifetimeCount: 0,
+                                    },
+                                },
+                            },
+                            include: { usage: true }
+                        })
+                    }
                 } catch (error) {
-                    console.error("Failed to create user in layout:", error)
+                    console.error("Failed to create/update user in layout:", error)
                 }
             }
         }

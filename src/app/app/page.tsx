@@ -24,25 +24,44 @@ export default async function AppDashboard() {
 
         if (!email) {
             console.error("No email found for user:", clerkUser.id)
-            // Return null or redirect - can't create user without email
             return null
         }
 
         try {
-            user = await db.user.create({
-                data: {
-                    clerkId: clerkUser.id,
-                    email: email,
-                    usage: {
-                        create: {
-                            lifetimeCount: 0,
-                        },
-                    },
-                },
+            // Try to find user by email in case they exist but with different clerkId
+            const existingUser = await db.user.findUnique({
+                where: { email: email },
                 include: { usage: true }
             })
+
+            if (existingUser) {
+                // Update clerkId if it's different
+                if (existingUser.clerkId !== clerkUser.id) {
+                    user = await db.user.update({
+                        where: { id: existingUser.id },
+                        data: { clerkId: clerkUser.id },
+                        include: { usage: true }
+                    })
+                } else {
+                    user = existingUser
+                }
+            } else {
+                // Create new user
+                user = await db.user.create({
+                    data: {
+                        clerkId: clerkUser.id,
+                        email: email,
+                        usage: {
+                            create: {
+                                lifetimeCount: 0,
+                            },
+                        },
+                    },
+                    include: { usage: true }
+                })
+            }
         } catch (error) {
-            console.error("Failed to create user:", error)
+            console.error("Failed to create/update user:", error)
             return null
         }
     }
