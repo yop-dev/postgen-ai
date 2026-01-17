@@ -40,8 +40,8 @@ export default async function AppDashboard() {
 
             {/* Stats Overview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="group bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-sm hover:shadow-md transition-all">
-                    <div className="h-10 w-10 rounded-lg bg-slate-800 flex items-center justify-center mb-4">
+                <div className="group bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 rounded-2xl border border-slate-800 p-6 shadow-sm hover:shadow-md hover:border-slate-700 transition-all">
+                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg shadow-blue-500/20">
                         <Zap className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-sm font-medium text-slate-400">
@@ -62,8 +62,8 @@ export default async function AppDashboard() {
                     </p>
                 </div>
 
-                <div className="group bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-sm hover:shadow-md transition-all">
-                    <div className="h-10 w-10 rounded-lg bg-slate-800 flex items-center justify-center mb-4">
+                <div className="group bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 rounded-2xl border border-slate-800 p-6 shadow-sm hover:shadow-md hover:border-slate-700 transition-all">
+                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mb-4 shadow-lg shadow-purple-500/20">
                         <History className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-sm font-medium text-slate-400">Total Posts</h3>
@@ -71,8 +71,8 @@ export default async function AppDashboard() {
                     <p className="text-xs text-slate-500 mt-2">Across all time</p>
                 </div>
 
-                <div className="group bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-sm hover:shadow-md transition-all">
-                    <div className="h-10 w-10 rounded-lg bg-slate-800 flex items-center justify-center mb-4">
+                <div className="group bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 rounded-2xl border border-slate-800 p-6 shadow-sm hover:shadow-md hover:border-slate-700 transition-all">
+                    <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mb-4 shadow-lg shadow-amber-500/20">
                         <Crown className="h-5 w-5 text-white" />
                     </div>
                     <h3 className="text-sm font-medium text-slate-400">Active Plan</h3>
@@ -90,8 +90,24 @@ export default async function AppDashboard() {
             </div>
 
             {/* Quick Start Section */}
-            <div className="relative bg-slate-900 border border-slate-800 rounded-2xl p-10 md:p-16 text-center shadow-sm">
-                <div className="max-w-2xl mx-auto space-y-6">
+            <div className="relative bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-slate-800 rounded-2xl overflow-hidden p-10 md:p-16 text-center shadow-sm">
+                {/* Video Background */}
+                <div className="absolute inset-0 z-0">
+                    <video
+                        className="w-full h-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                    >
+                        <source src="/hero-bg-2-cropped.mp4" type="video/mp4" />
+                    </video>
+                    {/* Dark overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/85 to-slate-950/90" />
+                </div>
+
+                <div className="relative max-w-2xl mx-auto space-y-6 z-10">
                     <h2 className="text-3xl font-bold tracking-tight text-white">
                         Stop the scroll <br />
                         with PostGen AI
