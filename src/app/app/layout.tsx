@@ -15,10 +15,30 @@ export default async function AppLayout({
     let currentUsage = 0
 
     if (userId) {
-        const user = await db.user.findUnique({
+        const { currentUser } = await import("@clerk/nextjs/server")
+        const clerkUser = await currentUser()
+
+        let user = await db.user.findUnique({
             where: { clerkId: userId },
             include: { usage: true }
         })
+
+        // Fallback: Create user if they don't exist (webhook might have failed)
+        if (!user && clerkUser) {
+            user = await db.user.create({
+                data: {
+                    clerkId: userId,
+                    email: clerkUser.emailAddresses[0].emailAddress,
+                    usage: {
+                        create: {
+                            lifetimeCount: 0,
+                        },
+                    },
+                },
+                include: { usage: true }
+            })
+        }
+
         isPro = user?.plan === "PRO"
         currentUsage = user?.usage?.lifetimeCount || 0
     }

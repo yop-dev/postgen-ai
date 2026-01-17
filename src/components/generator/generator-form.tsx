@@ -29,12 +29,21 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select"
-import { Sparkles, Loader2, Wand2, Info } from "lucide-react"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+import { Sparkles, Loader2, Wand2, Info, Crown } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 export function GeneratorForm() {
     const [isLoading, setIsLoading] = useState(false)
+    const [showUpgradeModal, setShowUpgradeModal] = useState(false)
     const router = useRouter()
 
     const form = useForm({
@@ -59,12 +68,32 @@ export function GeneratorForm() {
             })
 
             if (!response.ok) {
-                const error = await response.json()
-                throw new Error(error.message || "Failed to generate post")
+                let errorMessage = "Failed to generate post"
+                let errorCode = ""
+                try {
+                    const error = await response.json()
+                    errorMessage = error.error || error.message || errorMessage
+                    errorCode = error.code || ""
+                } catch {
+                    // If JSON parsing fails, try to get text
+                    const errorText = await response.text()
+                    if (errorText) errorMessage = errorText
+                }
+
+                // Show upgrade modal for free limit error
+                if (errorCode === "FREE_LIMIT_REACHED") {
+                    setShowUpgradeModal(true)
+                    return
+                }
+
+                throw new Error(errorMessage)
             }
 
             const data = await response.json()
             toast.success("LinkedIn posts generated successfully!")
+
+            // Refresh server components to update usage count in sidebar
+            router.refresh()
 
             // Navigate to the post details page (we will create this next)
             router.push(`/app/history/${data.id}`)
@@ -287,6 +316,58 @@ export function GeneratorForm() {
                     </p>
                 </div>
             </form>
+
+            {/* Upgrade Modal */}
+            <Dialog open={showUpgradeModal} onOpenChange={setShowUpgradeModal}>
+                <DialogContent className="sm:max-w-md bg-slate-900 border-slate-800 text-white">
+                    <DialogHeader>
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-orange-500">
+                            <Crown className="h-6 w-6 text-white" />
+                        </div>
+                        <DialogTitle className="text-center text-2xl font-bold">
+                            Upgrade to Pro
+                        </DialogTitle>
+                        <DialogDescription className="text-center text-slate-400">
+                            You've reached your free generation limit of 3 posts. Upgrade to Pro for unlimited generations and premium features!
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="my-4 space-y-3">
+                        <div className="flex items-start gap-3">
+                            <div className="mt-1 h-2 w-2 rounded-full bg-green-500" />
+                            <p className="text-sm text-slate-300">Unlimited post generations</p>
+                        </div>
+                        <div className="flex items-start gap-3">
+                            <div className="mt-1 h-2 w-2 rounded-full bg-green-500" />
+                            <p className="text-sm text-slate-300">Higher quality images (1024x1024)</p>
+                        </div>
+                        <div className="flex items-start gap-3">
+                            <div className="mt-1 h-2 w-2 rounded-full bg-green-500" />
+                            <p className="text-sm text-slate-300">Priority support</p>
+                        </div>
+                    </div>
+
+                    <DialogFooter className="flex-col sm:flex-col gap-2">
+                        <Button
+                            onClick={() => {
+                                setShowUpgradeModal(false)
+                                router.push('/app/billing')
+                            }}
+                            className="w-full h-12 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold hover:from-yellow-500 hover:to-orange-600"
+                        >
+                            <Crown className="mr-2 h-4 w-4" />
+                            Upgrade to Pro
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            onClick={() => setShowUpgradeModal(false)}
+                            className="w-full text-slate-400 hover:text-white hover:bg-slate-800"
+                        >
+                            Maybe Later
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </Form>
     )
 }

@@ -14,8 +14,8 @@ interface LinkedInPreviewProps {
 }
 
 export function LinkedInPreview({
-    userName = "Product Innovator",
-    userHeadline = "Building the future of AI Content | Speaker | Thought Leader",
+    userName = "Joner De Silva",
+    userHeadline = "Building the future of AI Content | Full Stack Developer | Thought Leader",
     content,
     imageUrl,
     createdAt = new Date(),

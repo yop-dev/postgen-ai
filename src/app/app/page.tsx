@@ -8,19 +8,41 @@ import Link from "next/link"
 export default async function AppDashboard() {
     const clerkUser = await currentUser()
 
+    if (!clerkUser) {
+        return null
+    }
+
     // Get user from database to check plan
-    const user = await db.user.findUnique({
-        where: { clerkId: clerkUser?.id },
+    let user = await db.user.findUnique({
+        where: { clerkId: clerkUser.id },
         include: { usage: true }
     })
+
+    // Fallback: Create user if they don't exist (webhook might have failed)
+    if (!user) {
+        user = await db.user.create({
+            data: {
+                clerkId: clerkUser.id,
+                email: clerkUser.emailAddresses[0].emailAddress,
+                usage: {
+                    create: {
+                        lifetimeCount: 0,
+                    },
+                },
+            },
+            include: { usage: true }
+        })
+    }
 
     const isPro = user?.plan === "PRO"
     const currentUsage = user?.usage?.lifetimeCount || 0
 
-    // Get total posts count
-    const totalPosts = await db.generation.count({
-        where: { userId: user?.id }
-    })
+    // Get total posts count - only if user exists in DB
+    const totalPosts = user?.id
+        ? await db.generation.count({
+            where: { userId: user.id }
+        })
+        : 0
 
     return (
         <div className="space-y-10 pb-10">

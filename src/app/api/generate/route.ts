@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     try {
         const { userId } = await auth()
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 })
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
         const body = await req.json()
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
             // Fallback for local dev without webhooks
             const { currentUser } = await import("@clerk/nextjs/server")
             const clerkUser = await currentUser()
-            if (!clerkUser) return new NextResponse("User not found in Clerk", { status: 404 })
+            if (!clerkUser) return NextResponse.json({ error: "User not found" }, { status: 404 })
 
             user = await db.user.create({
                 data: {
@@ -58,7 +58,13 @@ export async function POST(req: Request) {
         const isSuperAdmin = user.id === "cmkeywfi20000qrexcf4lsbfq"
 
         if (!isPro && !isSuperAdmin && currentUsage >= FREE_GENERATION_LIMIT) {
-            return new NextResponse("Free limit reached. Please upgrade to Pro.", { status: 403 })
+            return NextResponse.json(
+                {
+                    error: "You've reached your free generation limit. Upgrade to Pro for unlimited generations!",
+                    code: "FREE_LIMIT_REACHED"
+                },
+                { status: 403 }
+            )
         }
 
         // 2. Generate Captions AND Image Prompt using Groq
@@ -79,10 +85,20 @@ export async function POST(req: Request) {
 
         const prompt = `Generate ${count} high-engaging LinkedIn post variants about the following topic: "${topic}". 
     The objective is ${objective} and the tone should be ${tone}.${personalizationContext}
+    
     IMPORTANT - WORD COUNT STRICTNESS:
     The post MUST be between ${minWords || 50} and ${maxWords || 300} words.
     Do NOT generate short content if a higher count is requested.
     If the requested count is high (e.g. >200 words), expand with detailed examples, actionable steps, lists, and deep insights to meet the length requirement.
+    
+    FORMATTING REQUIREMENTS:
+    - Use MINIMAL or NO emojis (use sparingly only when truly relevant)
+    - Use proper bullet points (•) or numbered lists (1., 2., 3.) when listing items
+    - DO NOT indent paragraphs - start all paragraphs flush left (no leading spaces or tabs)
+    - ALWAYS separate paragraphs with a blank line between them
+    - Use clear section breaks when discussing multiple concepts
+    - Maintain professional, clean formatting throughout
+    - Ensure consistent line breaks - never run paragraphs together
     
     For EACH variant, you must ALSO generate a creative, specific text-to-image prompt for a header image that visually represents that specific post variant.
     - Style guide: Modern, clean, minimalist, abstract or isometric illustration. 
@@ -91,7 +107,7 @@ export async function POST(req: Request) {
 
     Return the response as a JSON object with a "variants" key containing an array of ${count} objects.
     Each object in the array MUST have:
-    - "post": the complete post content string including emojis and hashtags.
+    - "post": the complete post content string with proper formatting and minimal emojis.
     - "imagePrompt": the image description string.`
 
         const completion = await groq.chat.completions.create({
@@ -118,9 +134,22 @@ export async function POST(req: Request) {
             if (Array.isArray(values[0])) rawVariants = values[0]
         }
 
+        // Function to clean up unwanted indentation
+        const cleanContent = (text: string): string => {
+            return text
+                .split('\n')
+                .map(line => line.trimStart()) // Remove leading whitespace from each line
+                .join('\n')
+                .replace(/\n{3,}/g, '\n\n') // Replace 3+ consecutive newlines with just 2
+        }
+
         // Normalize variants to ensure they have post and imagePrompt
         const processedVariants = rawVariants.map((v: any) => {
-            const postContent = typeof v === 'string' ? v : v.post || v.content || v.text || JSON.stringify(v)
+            let postContent = typeof v === 'string' ? v : v.post || v.content || v.text || JSON.stringify(v)
+
+            // Clean up indentation and formatting
+            postContent = cleanContent(postContent)
+
             const imgPrompt = v.imagePrompt || `A professional, high-quality, modern minimalist image for a LinkedIn post about: ${topic}`
 
             // Generate Image URL for this variant
@@ -173,6 +202,9 @@ export async function POST(req: Request) {
 
     } catch (error: any) {
         console.error("[GENERATE_ERROR]", error)
-        return new NextResponse(error.message || "Internal Error", { status: 500 })
+        return NextResponse.json(
+            { error: error.message || "Internal server error. Please try again." },
+            { status: 500 }
+        )
     }
 }
